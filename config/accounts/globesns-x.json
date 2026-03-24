@@ -1,0 +1,13 @@
+{
+  "account_profile_id": "globesns-x",
+  "platform": "x",
+  "account_name": "GlobeSNS 公式",
+  "service_name": "globesns",
+  "credential_env_prefix": "GLOBESNS_X",
+  "posting_schedule": {
+    "cron": "37 * * * *",
+    "description": "毎時37分"
+  },
+  "timezone": "Asia/Tokyo",
+  "is_active": true
+}

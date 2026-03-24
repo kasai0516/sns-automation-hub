@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-03-24T00:57:20.201Z",
+  "code": 403,
+  "data": {
+    "detail": "You are not permitted to perform this action.",
+    "type": "about:blank",
+    "title": "Forbidden",
+    "status": 403
+  },
+  "message": "Request failed with code 403",
+  "rateLimit": {
+    "limit": 100,
+    "remaining": 88,
+    "reset": 1774314016
+  },
+  "type": "ApiResponseError",
+  "tweetTextLength": 200,
+  "tweetTextPreview": "最近、SNS各社のアルゴリズムは「拡散量」より「視聴の質」を強く見始めている印象があります。\n\n再生数や表示回数だけでは伸び切らず、保存、滞在時間、プロフィール遷移、リピート視聴のような“次の行動”が評価されやすい傾向です。\n\nつまり、目を引く投稿より、見た後に判断材料が残る投稿が強い。短期的な派手さより、納得感の設計が重要になってきたと考えています。\n\nみなさんの運用でも、この変化は感じますか？"
+}

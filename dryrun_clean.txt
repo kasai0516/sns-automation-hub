@@ -1,0 +1,135 @@
+﻿
+▸ Mode: dry-run | Accounts: globesns-x
+────────────────────────────────────────────────────────────
+
+▸ Generating post for globesns-x
+[2026-03-23 23:29:29] INFO  Service: globesns | Platform: x
+[2026-03-23 23:29:29] INFO  Fetching source: https://sns.globezenith.net
+[2026-03-23 23:29:30] DEBUG Extracted: title="SNSフォロワー購入なら GlobeSNS｜Instagram・X・TikTok・YouTube対応", 20 headings, 4 list items
+[2026-03-23 23:29:30] INFO  Fetching source: https://sns.globezenith.net/#services
+[2026-03-23 23:29:30] DEBUG Extracted: title="SNSフォロワー購入なら GlobeSNS｜Instagram・X・TikTok・YouTube対応", 20 headings, 4 list items
+[2026-03-23 23:29:31] INFO  Fetching source: https://sns.globezenith.net/#pricing
+[2026-03-23 23:29:31] DEBUG Extracted: title="SNSフォロワー購入なら GlobeSNS｜Instagram・X・TikTok・YouTube対応", 20 headings, 4 list items
+[2026-03-23 23:29:32] DEBUG Summary generated: 2181 chars
+[2026-03-23 23:29:32] INFO  Selected angle: 教育コンテンツ導線型 (educational)
+[2026-03-23 23:29:32] INFO  Generation attempt 1/3
+[2026-03-23 23:29:32] INFO  Calling LLM (openai)...
+OpenAI:DEBUG:request https://api.openai.com/v1/chat/completions {
+  method: 'post',
+  path: '/chat/completions',
+  body: {
+    model: 'gpt-4o-mini',
+    messages: [ [Object], [Object] ],
+    temperature: 0.8,
+    max_tokens: 1000,
+    response_format: { type: 'json_object' }
+  },
+  stream: false
+} {
+  'content-length': '7656',
+  accept: 'application/json',
+  'content-type': 'application/json',
+  'user-agent': 'OpenAI/JS 4.104.0',
+  'x-stainless-lang': 'js',
+  'x-stainless-package-version': '4.104.0',
+  'x-stainless-os': 'Windows',
+  'x-stainless-arch': 'x64',
+  'x-stainless-runtime': 'node',
+  'x-stainless-runtime-version': 'v24.14.0',
+  authorization: 'REDACTED',
+  'x-stainless-retry-count': '0',
+  'x-stainless-timeout': '600'
+}
+OpenAI:DEBUG:response 200 https://api.openai.com/v1/chat/completions Headers {
+  Symbol(map): [Object: null prototype] {
+    date: [ 'Mon, 23 Mar 2026 23:29:34 GMT' ],
+    'content-type': [ 'application/json' ],
+    'transfer-encoding': [ 'chunked' ],
+    connection: [ 'keep-alive' ],
+    'cf-ray': [ '9e1138005a47d764-NRT' ],
+    'cf-cache-status': [ 'DYNAMIC' ],
+    server: [ 'cloudflare' ],
+    'strict-transport-security': [ 'max-age=31536000; includeSubDomains; preload' ],
+    'x-content-type-options': [ 'nosniff' ],
+    'access-control-expose-headers': [ 'X-Request-ID' ],
+    'openai-organization': [ 'dhea-xamfzn' ],
+    'openai-processing-ms': [ '2572' ],
+    'openai-project': [ 'proj_UY8UNTFDJfDHSuWlNjLhmohx' ],
+    'openai-version': [ '2020-10-01' ],
+    'x-openai-proxy-wasm': [ 'v0.1' ],
+    'x-ratelimit-limit-requests': [ '10000' ],
+    'x-ratelimit-limit-tokens': [ '200000' ],
+    'x-ratelimit-remaining-requests': [ '9999' ],
+    'x-ratelimit-remaining-tokens': [ '198167' ],
+    'x-ratelimit-reset-requests': [ '8.64s' ],
+    'x-ratelimit-reset-tokens': [ '549ms' ],
+    'x-request-id': [ 'req_3b11c9bda992408398adafa4f0f62ecd' ],
+    'set-cookie': [
+      '__cf_bm=HTjuK6Uezttrq6qafTxOIupZQ807bgvpSmV8gQS96Xk-1774308572.2126162-1.0.1.1-.eNTVrUNK40WWtNFPBZdS.1GBfZxAPFyspZ99PqyJ2bN.d5S.QBmBJ2nJebTgR8LEbIuFAz86OCvvHTA4r6CaaW6fYEC8erzV6Y9PNWzM7Q25k9KjNvyC.q.oj_EeimL; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Mon, 23 Mar 2026 23:59:34 GMT'
+    ],
+    'content-encoding': [ 'gzip' ],
+    'alt-svc': [ 'h3=":443"; ma=86400' ]
+  }
+} {
+  id: 'chatcmpl-DMj08Dd6zem365BiRlGc2QjesBSKS',
+  object: 'chat.completion',
+  created: 1774308572,
+  model: 'gpt-4o-mini-2024-07-18',
+  choices: [
+    {
+      index: 0,
+      message: [Object],
+      logprobs: null,
+      finish_reason: 'stop'
+    }
+  ],
+  usage: {
+    prompt_tokens: 2030,
+    completion_tokens: 163,
+    total_tokens: 2193,
+    prompt_tokens_details: { cached_tokens: 1920, audio_tokens: 0 },
+    completion_tokens_details: {
+      reasoning_tokens: 0,
+      audio_tokens: 0,
+      accepted_prediction_tokens: 0,
+      rejected_prediction_tokens: 0
+    }
+  },
+  service_tier: 'default',
+  system_fingerprint: 'fp_ca3e7d71bf'
+}
+[2026-03-23 23:29:34] DEBUG OpenAI raw response: {
+  "hook": "SNS運用の悩み、解決していますか？",
+  "generated_text": "フォロワーが増えない原因は、戦略の欠如かもしれません。例えば、競合分析を行い、成功事例を参考にすることで、フォロワー数は平均30%増加することも。詳細なノウハウを学びたい方はこちらから→ https://sns.globezenith.net/?utm_source=x&utm_medium=social&utm_campaign=auto_bot&utm_content=globesns_educational_globesns-x #SNSマーケティング #フォロワー増加",
+  "hashtags": ["SNSマーケティング", "フォロワー増加"]
+}
+[2026-03-23 23:29:34] ✓     Post generated successfully (attempt 1)
+
+═══ DRY-RUN RESULT ═══
+account_profile_id: globesns-x
+service_name: globesns
+platform: x
+angle: educational
+post_type: educational
+hook: SNS運用の悩み、解決していますか？
+hashtags: [
+  "SNSマーケティング",
+  "フォロワー増加"
+]
+generated_text: フォロワーが増えない原因は、戦略の欠如かもしれません。例えば、競合分析を行い、成功事例を参考にすることで、フォロワー数は平均30%増加することも。詳細なノウハウを学びたい方はこちらから→ https://sns.globezenith.net/?utm_source=x&utm_medium=social&utm_campaign=auto_bot&utm_content=globesns_educational_globesns-x #SNSマーケティング #フォロワー増加
+original_url: https://sns.globezenith.net
+utm_url: https://sns.globezenith.net/?utm_source=x&utm_medium=social&utm_campaign=auto_bot&utm_content=globesns_educational_globesns-x
+reference_summary: 【サービス概要】SNSフォロワー獲得・エンゲージメント向上を支援するサービス。Instagram、X、TikTok、YouTubeなど主要SNSに対応。
+【ターゲット】SNS運用担当者、インフルエンサー、個人事業主、ECサイト運営者、ブランドマーケター、SNSマーケティング初心者
+
+【参照: https://sns.globezenith.net】
+タイトル: SNSフォロワー購入なら GlobeSNS｜Instagram・X・TikTok・YouTube対応
+見出し: フォロワーを、確かな品質で増やす。 / 安心の法人運営 / パスワード一切不要 / 30日間品質保証 / 徹底した秘密厳守
+...
+dedupe_score: 0
+dedupe_duplicate: false
+char_count: 240
+═══════════════════════
+
+────────────────────────────────────────────────────────────
+[2026-03-23 23:29:34] ✓     Done.

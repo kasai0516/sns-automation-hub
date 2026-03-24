@@ -1,0 +1,61 @@
+name: SNS Auto Post (Publish)
+
+on:
+  schedule:
+    # GlobeSNS × X: 毎時37分に投稿
+    - cron: '37 * * * *'
+  workflow_dispatch:
+    inputs:
+      account:
+        description: 'Account profile ID (e.g. globesns-x)'
+        required: false
+        default: 'globesns-x'
+      confirm:
+        description: 'Type "publish" to confirm'
+        required: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'publish' || github.event_name == 'schedule'
+    env:
+      LLM_PROVIDER: ${{ secrets.LLM_PROVIDER }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      # GlobeSNS × X credentials
+      GLOBESNS_X_API_KEY: ${{ secrets.GLOBESNS_X_API_KEY }}
+      GLOBESNS_X_API_SECRET: ${{ secrets.GLOBESNS_X_API_SECRET }}
+      GLOBESNS_X_ACCESS_TOKEN: ${{ secrets.GLOBESNS_X_ACCESS_TOKEN }}
+      GLOBESNS_X_ACCESS_SECRET: ${{ secrets.GLOBESNS_X_ACCESS_SECRET }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Determine account from schedule
+        id: account
+        run: |
+          if [ -n "${{ github.event.inputs.account }}" ]; then
+            echo "id=${{ github.event.inputs.account }}" >> $GITHUB_OUTPUT
+          else
+            echo "id=globesns-x" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate and publish post
+        run: npx tsx src/cli/index.ts post --account ${{ steps.account.outputs.id }} --mode publish
+
+      - name: Commit history
+        run: |
+          git config user.name "SNS Bot"
+          git config user.email "bot@example.com"
+          git add data/history.json
+          git diff --cached --quiet || git commit -m "📝 Post history: ${{ steps.account.outputs.id }} $(date -u +'%Y-%m-%d %H:%M')"
+          git push

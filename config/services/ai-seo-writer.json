@@ -1,0 +1,72 @@
+{
+  "service_name": "ai-seo-writer",
+  "base_url": "https://example.com/ai-seo-writer",
+  "category": "SEO",
+  "description": "AIを活用したSEO記事の自動生成・リライトツール。キーワード分析からコンテンツ生成、WordPress投稿まで一気通貫で対応。",
+  "target_audience": [
+    "SEO担当者",
+    "Webマーケター",
+    "アフィリエイター",
+    "コンテンツマーケティング担当",
+    "個人ブロガー",
+    "Web制作会社"
+  ],
+  "core_benefits": [
+    "記事作成時間を90%削減",
+    "SEOに最適化された記事を自動生成",
+    "キーワード分析から投稿まで一気通貫",
+    "リライト機能で既存記事を改善",
+    "WordPress直接投稿対応"
+  ],
+  "differentiators": [
+    "日本語に特化したAIライティング",
+    "競合分析を元にした記事構成提案",
+    "SEOスコアリングによる品質担保",
+    "パフォーマンスレポート自動生成"
+  ],
+  "pain_points": [
+    "毎日の記事作成に時間がかかりすぎる",
+    "SEOを意識した記事が書けない",
+    "ライター外注のコストが高い",
+    "記事の品質がバラバラ",
+    "検索順位が上がらない",
+    "既存記事のリライトが追いつかない"
+  ],
+  "proof_points": [
+    "記事作成時間を平均90%短縮",
+    "生成記事のSEOスコア平均85点以上"
+  ],
+  "cta_patterns": [
+    "まずは無料で試してみる",
+    "詳しくはこちら",
+    "SEO記事作成を効率化する",
+    "記事作成の悩みを解決する"
+  ],
+  "banned_phrases": [
+    "絶対に",
+    "100%",
+    "誰でも簡単に",
+    "今すぐ登録",
+    "限定公開",
+    "残りわずか"
+  ],
+  "reference_urls": [
+    {
+      "url": "https://example.com/ai-seo-writer",
+      "label": "LP",
+      "type": "lp"
+    },
+    {
+      "url": "https://example.com/ai-seo-writer/features",
+      "label": "機能紹介",
+      "type": "feature"
+    },
+    {
+      "url": "https://example.com/ai-seo-writer/faq",
+      "label": "FAQ",
+      "type": "faq"
+    }
+  ],
+  "is_active": true,
+  "priority": 1
+}

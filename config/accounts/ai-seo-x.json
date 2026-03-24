@@ -1,0 +1,13 @@
+{
+  "account_profile_id": "ai-seo-x",
+  "platform": "x",
+  "account_name": "AI SEO Writer 公式",
+  "service_name": "ai-seo-writer",
+  "credential_env_prefix": "AI_SEO_X",
+  "posting_schedule": {
+    "cron": "7 * * * *",
+    "description": "毎時07分"
+  },
+  "timezone": "Asia/Tokyo",
+  "is_active": true
+}

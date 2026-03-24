@@ -1,0 +1,39 @@
+{
+  "name": "sns-automation-hub",
+  "version": "0.1.0",
+  "description": "CLI-based SNS auto-posting hub for promoting AI SEO Writer and GlobeSNS",
+  "type": "module",
+  "main": "dist/cli/index.js",
+  "bin": {
+    "sns-hub": "dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/cli/index.ts",
+    "post": "tsx src/cli/index.ts post",
+    "post:x:test": "tsx src/cli/index.ts post --platform x --mode dry-run",
+    "post:x": "tsx src/cli/index.ts post --platform x --mode publish",
+    "post:threads:test": "tsx src/cli/index.ts post --platform threads --mode dry-run",
+    "post:threads": "tsx src/cli/index.ts post --platform threads --mode publish",
+    "post:all:test": "tsx src/cli/index.ts post --platform all --mode dry-run",
+    "validate:env": "tsx src/cli/index.ts validate-env",
+    "history:list": "tsx src/cli/index.ts history list",
+    "history:recent": "tsx src/cli/index.ts history recent",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "commander": "^13.1.0",
+    "dotenv": "^16.4.7",
+    "openai": "^4.85.0",
+    "@google/generative-ai": "^0.24.0",
+    "twitter-api-v2": "^1.19.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}

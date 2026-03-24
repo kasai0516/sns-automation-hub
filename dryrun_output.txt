@@ -1,0 +1,129 @@
+﻿
+[1m[36m笆ｸ Mode: dry-run | Accounts: globesns-x[0m
+[90m笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏[0m
+
+[1m[36m笆ｸ Generating post for globesns-x[0m
+[90m[2026-03-23 23:29:01][0m [34mINFO[0m  Service: globesns | Platform: x
+[90m[2026-03-23 23:29:01][0m [34mINFO[0m  Fetching source: https://sns.globezenith.net
+[90m[2026-03-23 23:29:01] DEBUG Extracted: title="SNS繝輔か繝ｭ繝ｯ繝ｼ雉ｼ蜈･縺ｪ繧・GlobeSNS・廬nstagram繝ｻX繝ｻTikTok繝ｻYouTube蟇ｾ蠢・, 20 headings, 4 list items[0m
+[90m[2026-03-23 23:29:01][0m [34mINFO[0m  Fetching source: https://sns.globezenith.net/#services
+[90m[2026-03-23 23:29:02] DEBUG Extracted: title="SNS繝輔か繝ｭ繝ｯ繝ｼ雉ｼ蜈･縺ｪ繧・GlobeSNS・廬nstagram繝ｻX繝ｻTikTok繝ｻYouTube蟇ｾ蠢・, 20 headings, 4 list items[0m
+[90m[2026-03-23 23:29:02][0m [34mINFO[0m  Fetching source: https://sns.globezenith.net/#pricing
+[90m[2026-03-23 23:29:02] DEBUG Extracted: title="SNS繝輔か繝ｭ繝ｯ繝ｼ雉ｼ蜈･縺ｪ繧・GlobeSNS・廬nstagram繝ｻX繝ｻTikTok繝ｻYouTube蟇ｾ蠢・, 20 headings, 4 list items[0m
+[90m[2026-03-23 23:29:03] DEBUG Summary generated: 2181 chars[0m
+[90m[2026-03-23 23:29:03][0m [34mINFO[0m  Selected angle: 謨呵ご繧ｳ繝ｳ繝・Φ繝・ｰ守ｷ壼梛 (educational)
+[90m[2026-03-23 23:29:03][0m [34mINFO[0m  Generation attempt 1/3
+[90m[2026-03-23 23:29:03][0m [34mINFO[0m  Calling LLM (openai)...
+OpenAI:DEBUG:request https://api.openai.com/v1/chat/completions {
+  method: 'post',
+  path: '/chat/completions',
+  body: {
+    model: 'gpt-4o-mini',
+    messages: [ [Object], [Object] ],
+    temperature: 0.8,
+    max_tokens: 1000,
+    response_format: { type: 'json_object' }
+  },
+  stream: false
+} {
+  'content-length': '7656',
+  accept: 'application/json',
+  'content-type': 'application/json',
+  'user-agent': 'OpenAI/JS 4.104.0',
+  'x-stainless-lang': 'js',
+  'x-stainless-package-version': '4.104.0',
+  'x-stainless-os': 'Windows',
+  'x-stainless-arch': 'x64',
+  'x-stainless-runtime': 'node',
+  'x-stainless-runtime-version': 'v24.14.0',
+  authorization: 'REDACTED',
+  'x-stainless-retry-count': '0',
+  'x-stainless-timeout': '600'
+}
+OpenAI:DEBUG:response 200 https://api.openai.com/v1/chat/completions Headers {
+  Symbol(map): [Object: null prototype] {
+    date: [ 'Mon, 23 Mar 2026 23:29:07 GMT' ],
+    'content-type': [ 'application/json' ],
+    'transfer-encoding': [ 'chunked' ],
+    connection: [ 'keep-alive' ],
+    'cf-ray': [ '9e11374bafb2d54d-NRT' ],
+    'cf-cache-status': [ 'DYNAMIC' ],
+    server: [ 'cloudflare' ],
+    'strict-transport-security': [ 'max-age=31536000; includeSubDomains; preload' ],
+    'x-content-type-options': [ 'nosniff' ],
+    'access-control-expose-headers': [ 'X-Request-ID' ],
+    'openai-organization': [ 'dhea-xamfzn' ],
+    'openai-processing-ms': [ '3453' ],
+    'openai-project': [ 'proj_UY8UNTFDJfDHSuWlNjLhmohx' ],
+    'openai-version': [ '2020-10-01' ],
+    'x-openai-proxy-wasm': [ 'v0.1' ],
+    'x-ratelimit-limit-requests': [ '10000' ],
+    'x-ratelimit-limit-tokens': [ '200000' ],
+    'x-ratelimit-remaining-requests': [ '9999' ],
+    'x-ratelimit-remaining-tokens': [ '198167' ],
+    'x-ratelimit-reset-requests': [ '8.64s' ],
+    'x-ratelimit-reset-tokens': [ '549ms' ],
+    'x-request-id': [ 'req_9ad71b7b586b47fa9ca22f534aa7f8ff' ],
+    'set-cookie': [
+      '__cf_bm=5_vR3R5wYTIFWdYPELbvkH5Hva._xuiHd7hFEEqDqwY-1774308543.3107889-1.0.1.1-eyP0uMXPRYMYE02Og4jiNdmOriI7fU3HtaLUCV1f5fUga66Hz91xBMacS8taTN7s5k7_mSyW4SgnP0jXBy3OWG8mfQKeV5LY7Qrhp1mtvLox_lgMJjmxB2Yu42NilRFV; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Mon, 23 Mar 2026 23:59:07 GMT'
+    ],
+    'content-encoding': [ 'gzip' ],
+    'alt-svc': [ 'h3=":443"; ma=86400' ]
+  }
+} {
+  id: 'chatcmpl-DMizgA2GeWXCAjpZC16X04KILvjXv',
+  object: 'chat.completion',
+  created: 1774308544,
+  model: 'gpt-4o-mini-2024-07-18',
+  choices: [
+    {
+      index: 0,
+      message: [Object],
+      logprobs: null,
+      finish_reason: 'stop'
+    }
+  ],
+  usage: {
+    prompt_tokens: 2030,
+    completion_tokens: 154,
+    total_tokens: 2184,
+    prompt_tokens_details: { cached_tokens: 1920, audio_tokens: 0 },
+    completion_tokens_details: {
+      reasoning_tokens: 0,
+      audio_tokens: 0,
+      accepted_prediction_tokens: 0,
+      rejected_prediction_tokens: 0
+    }
+  },
+  service_tier: 'default',
+  system_fingerprint: 'fp_ca3e7d71bf'
+}
+[90m[2026-03-23 23:29:07] DEBUG OpenAI raw response: {
+  "hook": "SNS驕狗畑縺ｮ謔ｩ縺ｿ縲∬ｧ｣豎ｺ遲悶・縺薙％縺ｫ縲・,
+  "generated_text": "繝輔か繝ｭ繝ｯ繝ｼ縺悟｢励∴縺ｪ縺・炊逕ｱ縺ｯ縲・°逕ｨ謌ｦ逡･縺ｫ縺ゅｊ縺ｾ縺吶ゆｾ九∴縺ｰ縲∫峡閾ｪ縺ｮ繧ｳ繝ｳ繝・Φ繝・姶逡･繧堤ｫ九※縺溘い繧ｫ繧ｦ繝ｳ繝医・縲∝ｹｳ蝮・＠縺ｦ繝輔か繝ｭ繝ｯ繝ｼ謨ｰ縺・0%蠅怜刈縺励※縺・∪縺吶４NS驕狗畑縺ｮ繝偵Φ繝医ｒ繧ゅ▲縺ｨ遏･繧翫◆縺・婿縺ｯ縲√％縺｡繧峨ｒ繝√ぉ繝・け・・https://sns.globezenith.net/?utm_source=x&utm_medium=social&utm_campaign=auto_bot&utm_content=globesns_educational_globesns-x",
+  "hashtags": ["#SNS繝槭・繧ｱ繝・ぅ繝ｳ繧ｰ", "#繝輔か繝ｭ繝ｯ繝ｼ蠅怜刈"]
+}[0m
+[90m[2026-03-23 23:29:07][0m [32m笨・[0m     Post generated successfully (attempt 1)
+
+[1m[33m笊絶武笊・DRY-RUN RESULT 笊絶武笊・[0m
+[36maccount_profile_id:[0m globesns-x
+[36mservice_name:[0m globesns
+[36mplatform:[0m x
+[36mangle:[0m educational
+[36mpost_type:[0m educational
+[36mhook:[0m SNS驕狗畑縺ｮ謔ｩ縺ｿ縲∬ｧ｣豎ｺ遲悶・縺薙％縺ｫ縲・[36mhashtags:[0m [
+  "#SNS繝槭・繧ｱ繝・ぅ繝ｳ繧ｰ",
+  "#繝輔か繝ｭ繝ｯ繝ｼ蠅怜刈"
+]
+[36mgenerated_text:[0m 繝輔か繝ｭ繝ｯ繝ｼ縺悟｢励∴縺ｪ縺・炊逕ｱ縺ｯ縲・°逕ｨ謌ｦ逡･縺ｫ縺ゅｊ縺ｾ縺吶ゆｾ九∴縺ｰ縲∫峡閾ｪ縺ｮ繧ｳ繝ｳ繝・Φ繝・姶逡･繧堤ｫ九※縺溘い繧ｫ繧ｦ繝ｳ繝医・縲∝ｹｳ蝮・＠縺ｦ繝輔か繝ｭ繝ｯ繝ｼ謨ｰ縺・0%蠅怜刈縺励※縺・∪縺吶４NS驕狗畑縺ｮ繝偵Φ繝医ｒ繧ゅ▲縺ｨ遏･繧翫◆縺・婿縺ｯ縲√％縺｡繧峨ｒ繝√ぉ繝・け・・https://sns.globezenith.net/?utm_source=x&utm_medium=social&utm_campaign=auto_bot&utm_content=globesns_educational_globesns-x
+[36moriginal_url:[0m https://sns.globezenith.net
+[36mutm_url:[0m https://sns.globezenith.net/?utm_source=x&utm_medium=social&utm_campaign=auto_bot&utm_content=globesns_educational_globesns-x
+[36mreference_summary:[0m 縲舌し繝ｼ繝薙せ讎りｦ√全NS繝輔か繝ｭ繝ｯ繝ｼ迯ｲ蠕励・繧ｨ繝ｳ繧ｲ繝ｼ繧ｸ繝｡繝ｳ繝亥髄荳翫ｒ謾ｯ謠ｴ縺吶ｋ繧ｵ繝ｼ繝薙せ縲・nstagram縲々縲ゝikTok縲〆ouTube縺ｪ縺ｩ荳ｻ隕ヾNS縺ｫ蟇ｾ蠢懊・縲舌ち繝ｼ繧ｲ繝・ヨ縲全NS驕狗畑諡・ｽ楢・√う繝ｳ繝輔Ν繧ｨ繝ｳ繧ｵ繝ｼ縲∝倶ｺｺ莠区･ｭ荳ｻ縲・C繧ｵ繧､繝磯°蝟ｶ閠・√ヶ繝ｩ繝ｳ繝峨・繝ｼ繧ｱ繧ｿ繝ｼ縲ヾNS繝槭・繧ｱ繝・ぅ繝ｳ繧ｰ蛻晏ｿ・・
+縲仙盾辣ｧ: https://sns.globezenith.net縲・繧ｿ繧､繝医Ν: SNS繝輔か繝ｭ繝ｯ繝ｼ雉ｼ蜈･縺ｪ繧・GlobeSNS・廬nstagram繝ｻX繝ｻTikTok繝ｻYouTube蟇ｾ蠢・隕句・縺・ 繝輔か繝ｭ繝ｯ繝ｼ繧偵∫｢ｺ縺九↑蜩∬ｳｪ縺ｧ蠅励ｄ縺吶・/ 螳牙ｿ・・豕穂ｺｺ驕句霧 / 繝代せ繝ｯ繝ｼ繝我ｸ蛻・ｸ崎ｦ・/ 30譌･髢灘刀雉ｪ菫晁ｨｼ / 蠕ｹ蠎輔＠縺溽ｧ伜ｯ・宍螳・...
+[36mdedupe_score:[0m 0
+[36mdedupe_duplicate:[0m false
+[36mchar_count:[0m 226
+[33m笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊・[0m
+
+[90m笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏笏[0m
+[90m[2026-03-23 23:29:07][0m [32m笨・[0m     Done.

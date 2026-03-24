@@ -1,0 +1,143 @@
+{
+  "service_name": "globesns",
+  "base_url": "https://sns.globezenith.net",
+  "category": "SNS",
+  "description": "SNSフォロワー獲得・エンゲージメント向上を支援するサービス。Instagram、X、TikTok、YouTubeなど主要SNSに対応。安全性を重視した段階的な増加で、アカウント凍結リスクを最小化。日本人フォロワーに特化。",
+  "target_audience": [
+    "SNS運用担当者",
+    "インフルエンサー",
+    "個人事業主",
+    "ECサイト運営者",
+    "ブランドマーケター",
+    "SNSマーケティング初心者",
+    "YouTubeチャンネル運営者",
+    "TikTokクリエイター"
+  ],
+  "core_benefits": [
+    "主要SNSのフォロワーを安全に増やせる",
+    "エンゲージメント率を向上",
+    "日本人フォロワーに特化",
+    "アカウント凍結リスクを最小化",
+    "手間なくSNS集客を強化",
+    "YouTube収益化条件の達成を支援",
+    "TikTok収益化への近道"
+  ],
+  "differentiators": [
+    "日本市場特化のフォロワー獲得",
+    "安全性を重視した段階的な増加",
+    "複数SNSを一括管理",
+    "24時間サポート対応",
+    "活用事例・口コミが豊富"
+  ],
+  "pain_points": [
+    "フォロワーがなかなか増えない",
+    "SNS運用に時間をかけられない",
+    "広告費をかけずに集客したい",
+    "フォロワー購入の安全性が心配",
+    "日本人フォロワーが欲しいのに海外アカウントばかり",
+    "SNSのアルゴリズム変更についていけない",
+    "YouTube収益化の条件（登録者1000人）にまだ届かない",
+    "TikTokのフォロワーが伸びない",
+    "Instagramのリーチが下がってきた"
+  ],
+  "proof_points": [
+    "累計利用者数10,000人以上",
+    "アカウント凍結率0.1%以下"
+  ],
+  "cta_patterns": [
+    "SNS集客を強化する",
+    "フォロワーを増やす方法を見る",
+    "詳しいプランを確認する",
+    "まずは少額から試してみる",
+    "プロフのリンクからチェック"
+  ],
+  "banned_phrases": [
+    "絶対に",
+    "100%",
+    "バズる",
+    "爆増",
+    "今すぐ購入",
+    "限定セール",
+    "残りわずか",
+    "フォロワー購入"
+  ],
+  "reference_urls": [
+    {
+      "url": "https://sns.globezenith.net/",
+      "label": "トップページ",
+      "type": "lp"
+    },
+    {
+      "url": "https://sns.globezenith.net/instagram/",
+      "label": "Instagram サービス",
+      "type": "feature"
+    },
+    {
+      "url": "https://sns.globezenith.net/tiktok/",
+      "label": "TikTok サービス",
+      "type": "feature"
+    },
+    {
+      "url": "https://sns.globezenith.net/x/",
+      "label": "X (旧Twitter) サービス",
+      "type": "feature"
+    },
+    {
+      "url": "https://sns.globezenith.net/youtube/",
+      "label": "YouTube サービス",
+      "type": "feature"
+    },
+    {
+      "url": "https://sns.globezenith.net/reviews/",
+      "label": "口コミ・評価",
+      "type": "article"
+    },
+    {
+      "url": "https://sns.globezenith.net/cases/",
+      "label": "活用事例",
+      "type": "article"
+    },
+    {
+      "url": "https://sns.globezenith.net/flow/",
+      "label": "申込の流れ",
+      "type": "other"
+    },
+    {
+      "url": "https://sns.globezenith.net/faq/",
+      "label": "よくある質問",
+      "type": "faq"
+    },
+    {
+      "url": "https://sns.globezenith.net/safety/",
+      "label": "安全性・保証",
+      "type": "article"
+    },
+    {
+      "url": "https://sns.globezenith.net/media/youtube-monetization-conditions-fast-track/",
+      "label": "YouTube収益化条件を最短で達成する方法",
+      "type": "article"
+    },
+    {
+      "url": "https://sns.globezenith.net/media/x-twitter-followers-guide/",
+      "label": "X フォロワーを増やす方法ガイド",
+      "type": "article"
+    },
+    {
+      "url": "https://sns.globezenith.net/media/instagram-followers-guide/",
+      "label": "Instagramフォロワーを増やす完全ガイド",
+      "type": "article"
+    },
+    {
+      "url": "https://sns.globezenith.net/media/youtube-monetization-guide/",
+      "label": "YouTube収益化の条件と最短ルート",
+      "type": "article"
+    },
+    {
+      "url": "https://sns.globezenith.net/media/tiktok-followers-growth-guide/",
+      "label": "TikTokフォロワーを増やす完全ガイド",
+      "type": "article"
+    }
+  ],
+  "is_active": true,
+  "priority": 2
+}

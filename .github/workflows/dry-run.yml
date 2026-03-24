@@ -1,0 +1,55 @@
+name: SNS Auto Post (Dry-Run)
+
+on:
+  schedule:
+    # ai-seo-x: 毎時07分
+    - cron: '7 * * * *'
+    # ai-seo-threads: 毎時17分
+    - cron: '17 * * * *'
+    # globesns-x: 毎時37分
+    - cron: '37 * * * *'
+    # globesns-threads: 毎時47分
+    - cron: '47 * * * *'
+  workflow_dispatch:
+    inputs:
+      account:
+        description: 'Account profile ID (e.g. ai-seo-x)'
+        required: false
+        default: ''
+
+jobs:
+  dry-run:
+    runs-on: ubuntu-latest
+    env:
+      LLM_PROVIDER: ${{ secrets.LLM_PROVIDER }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Determine account from schedule
+        id: account
+        run: |
+          if [ -n "${{ github.event.inputs.account }}" ]; then
+            echo "id=${{ github.event.inputs.account }}" >> $GITHUB_OUTPUT
+          else
+            MINUTE=$(date -u +%M)
+            case $MINUTE in
+              07) echo "id=ai-seo-x" >> $GITHUB_OUTPUT ;;
+              17) echo "id=ai-seo-threads" >> $GITHUB_OUTPUT ;;
+              37) echo "id=globesns-x" >> $GITHUB_OUTPUT ;;
+              47) echo "id=globesns-threads" >> $GITHUB_OUTPUT ;;
+              *)  echo "id=ai-seo-x" >> $GITHUB_OUTPUT ;;
+            esac
+          fi
+
+      - name: Run dry-run
+        run: npx tsx src/cli/index.ts post --account ${{ steps.account.outputs.id }} --mode dry-run

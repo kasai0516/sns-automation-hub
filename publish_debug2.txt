@@ -1,0 +1,177 @@
+﻿
+▸ Mode: publish | Accounts: globesns-x
+────────────────────────────────────────────────────────────
+
+▸ Generating post for globesns-x
+[2026-03-24 00:55:52] INFO  Service: globesns | Platform: x
+[2026-03-24 00:55:52] INFO  Fetching source: https://sns.globezenith.net/
+[2026-03-24 00:55:52] DEBUG Extracted: title="SNSフォロワー購入なら GlobeSNS｜Instagram・X・TikTok・YouTube対応", 20 headings, 4 list items
+[2026-03-24 00:55:53] INFO  Fetching source: https://sns.globezenith.net/instagram/
+[2026-03-24 00:55:53] DEBUG Extracted: title="Instagramフォロワー増加プロモーション | GlobeSNS", 12 headings, 0 list items
+[2026-03-24 00:55:53] INFO  Fetching source: https://sns.globezenith.net/tiktok/
+[2026-03-24 00:55:53] DEBUG Extracted: title="TikTokフォロワー増加プロモーション | GlobeSNS", 12 headings, 0 list items
+[2026-03-24 00:55:54] INFO  Fetching source: https://sns.globezenith.net/x/
+[2026-03-24 00:55:54] DEBUG Extracted: title="X (旧Twitter) フォロワー増加プロモーション | GlobeSNS", 12 headings, 0 list items
+[2026-03-24 00:55:54] INFO  Fetching source: https://sns.globezenith.net/youtube/
+[2026-03-24 00:55:55] DEBUG Extracted: title="YouTubeチャンネル登録者・再生数・収益化サポート | GlobeSNS", 12 headings, 0 list items
+[2026-03-24 00:55:55] INFO  Fetching source: https://sns.globezenith.net/reviews/
+[2026-03-24 00:55:55] DEBUG Extracted: title="口コミ・お客様の声 | GlobeSNS", 3 headings, 0 list items
+[2026-03-24 00:55:56] INFO  Fetching source: https://sns.globezenith.net/cases/
+[2026-03-24 00:55:56] DEBUG Extracted: title="活用事例 | GlobeSNS", 6 headings, 0 list items
+[2026-03-24 00:55:56] INFO  Fetching source: https://sns.globezenith.net/flow/
+[2026-03-24 00:55:56] DEBUG Extracted: title="お申込みの流れ | GlobeSNS", 6 headings, 0 list items
+[2026-03-24 00:55:57] INFO  Fetching source: https://sns.globezenith.net/faq/
+[2026-03-24 00:55:57] DEBUG Extracted: title="よくある質問（FAQ） | GlobeSNS", 3 headings, 0 list items
+[2026-03-24 00:55:57] INFO  Fetching source: https://sns.globezenith.net/safety/
+[2026-03-24 00:55:57] DEBUG Extracted: title="安全性・保証について | GlobeSNS", 9 headings, 3 list items
+[2026-03-24 00:55:58] INFO  Fetching source: https://sns.globezenith.net/media/youtube-monetization-conditions-fast-track/
+[2026-03-24 00:55:58] DEBUG Extracted: title="YouTube収益化条件を最短で達成する方法｜登録者1000人・再生4000時間の攻略法 | GlobeSNS", 36 headings, 14 list items
+[2026-03-24 00:55:58] INFO  Fetching source: https://sns.globezenith.net/media/x-twitter-followers-guide/
+[2026-03-24 00:55:58] DEBUG Extracted: title="X (旧Twitter) フォロワーを増やす方法 — 影響力構築ガイド | GlobeSNS", 9 headings, 11 list items
+[2026-03-24 00:55:59] INFO  Fetching source: https://sns.globezenith.net/media/instagram-followers-guide/
+[2026-03-24 00:55:59] DEBUG Extracted: title="Instagramフォロワーを効率的に増やす方法 — 完全ガイド | GlobeSNS", 8 headings, 8 list items
+[2026-03-24 00:55:59] INFO  Fetching source: https://sns.globezenith.net/media/youtube-monetization-guide/
+[2026-03-24 00:55:59] DEBUG Extracted: title="YouTube収益化の条件と最短ルート — 登録者1,000人+再生4,000時間の達成ガイド | GlobeSNS", 9 headings, 14 list items
+[2026-03-24 00:56:00] INFO  Fetching source: https://sns.globezenith.net/media/tiktok-followers-growth-guide/
+[2026-03-24 00:56:00] DEBUG Extracted: title="TikTokフォロワーを効率的に増やす方法 — 収益化への完全ガイド | GlobeSNS", 9 headings, 11 list items
+[2026-03-24 00:56:01] DEBUG Summary generated: 9181 chars
+[2026-03-24 00:56:01] INFO  Selected angle: トレンド・業界分析型 (trend)
+[2026-03-24 00:56:01] INFO  Generation attempt 1/3
+[2026-03-24 00:56:01] INFO  Calling LLM (openai)...
+OpenAI:DEBUG:request https://api.openai.com/v1/chat/completions {
+  method: 'post',
+  path: '/chat/completions',
+  body: {
+    model: 'gpt-5.4',
+    messages: [ [Object], [Object] ],
+    temperature: 0.8,
+    response_format: { type: 'json_object' },
+    max_completion_tokens: 1000
+  },
+  stream: false
+} {
+  'content-length': '25285',
+  accept: 'application/json',
+  'content-type': 'application/json',
+  'user-agent': 'OpenAI/JS 4.104.0',
+  'x-stainless-lang': 'js',
+  'x-stainless-package-version': '4.104.0',
+  'x-stainless-os': 'Windows',
+  'x-stainless-arch': 'x64',
+  'x-stainless-runtime': 'node',
+  'x-stainless-runtime-version': 'v24.14.0',
+  authorization: 'REDACTED',
+  'x-stainless-retry-count': '0',
+  'x-stainless-timeout': '600'
+}
+OpenAI:DEBUG:response 200 https://api.openai.com/v1/chat/completions Headers {
+  Symbol(map): [Object: null prototype] {
+    date: [ 'Tue, 24 Mar 2026 00:56:05 GMT' ],
+    'content-type': [ 'application/json' ],
+    'transfer-encoding': [ 'chunked' ],
+    connection: [ 'keep-alive' ],
+    'cf-ray': [ '9e11b6b09bf3e87a-NRT' ],
+    'cf-cache-status': [ 'DYNAMIC' ],
+    server: [ 'cloudflare' ],
+    'strict-transport-security': [ 'max-age=31536000; includeSubDomains; preload' ],
+    'x-content-type-options': [ 'nosniff' ],
+    'access-control-expose-headers': [ 'X-Request-ID' ],
+    'openai-organization': [ 'dhea-xamfzn' ],
+    'openai-processing-ms': [ '3725' ],
+    'openai-project': [ 'proj_UY8UNTFDJfDHSuWlNjLhmohx' ],
+    'openai-version': [ '2020-10-01' ],
+    'x-openai-proxy-wasm': [ 'v0.1' ],
+    'x-ratelimit-limit-requests': [ '500' ],
+    'x-ratelimit-limit-tokens': [ '500000' ],
+    'x-ratelimit-remaining-requests': [ '499' ],
+    'x-ratelimit-remaining-tokens': [ '493782' ],
+    'x-ratelimit-reset-requests': [ '120ms' ],
+    'x-ratelimit-reset-tokens': [ '746ms' ],
+    'x-request-id': [ 'req_6ebc89b513c14dba99eee3c2e48cfb4a' ],
+    'set-cookie': [
+      '__cf_bm=GF51w4w_RLbX0JvOKccCO1pVME2oP3QD287aJIyU78c-1774313761.3753748-1.0.1.1-BXX4g_C4qlaaGggoqYU7KJlvcyy.RR14EdNmA7CpPN7.9FYHsqnAhILGhVwlgu9IbyzD_mo4C95TAPMh7Lam8MCQIQs.KFmMoFX9xqgveBp9svQy8A2yRypG0386BI2a; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Tue, 24 Mar 2026 01:26:05 GMT'
+    ],
+    'content-encoding': [ 'gzip' ],
+    'alt-svc': [ 'h3=":443"; ma=86400' ]
+  }
+} {
+  id: 'chatcmpl-DMkLpRFhpJXZE6oNMLSijv74k9lWa',
+  object: 'chat.completion',
+  created: 1774313761,
+  model: 'gpt-5.4-2026-03-05',
+  choices: [ { index: 0, message: [Object], finish_reason: 'stop' } ],
+  usage: {
+    prompt_tokens: 6756,
+    completion_tokens: 211,
+    total_tokens: 6967,
+    prompt_tokens_details: { cached_tokens: 5888, audio_tokens: 0 },
+    completion_tokens_details: {
+      reasoning_tokens: 0,
+      audio_tokens: 0,
+      accepted_prediction_tokens: 0,
+      rejected_prediction_tokens: 0
+    }
+  },
+  service_tier: 'default',
+  system_fingerprint: null
+}
+[2026-03-24 00:56:05] DEBUG OpenAI raw response: {"hook":"最近のXは、投稿単体の質だけでは伸びにくくなってきた印象があります。","generated_text":"最近のXは、投稿単体の質だけでは伸びにくくなってきた印象があります。\n\n特に見えるのは、初速の反応より「滞在」と「会話」が重く見られているような傾向です。短く鋭い一言より、背景や示唆まで書かれた長めの投稿のほうが残りやすい。\n\nこれは、拡散の設計が“瞬間最大風速”から“読了と対話”へ寄っているサインかもしれません。個人的には、これからは投稿力だけでなく、論点の置き方と返信設計が差になると考えています。みなさんはどう見ていますか？"}
+[2026-03-24 00:56:05] ✓     Post generated successfully (attempt 1)
+[2026-03-24 00:56:05] INFO  Publishing to X via @GlobeSNS 公式...
+[2026-03-24 00:56:05] INFO  Tweet text length: 216 chars
+=== RAW X API ERROR ===
+ApiResponseError: Request failed with code 403
+    at RequestHandlerHelper.createResponseError (C:\Users\Admin-5759\Desktop\自動投稿\sns-automation-hub\node_modules\twitter-api-v2\dist\cjs\client-mixins\request-handler.helper.js:104:16)
+    at RequestHandlerHelper.onResponseEndHandler (C:\Users\Admin-5759\Desktop\自動投稿\sns-automation-hub\node_modules\twitter-api-v2\dist\cjs\client-mixins\request-handler.helper.js:269:25)
+    at Gunzip.emit (node:events:508:28)
+    at endReadableNT (node:internal/streams/readable:1729:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  error: true,
+  type: 'response',
+  code: 403,
+  headers: {
+    date: 'Tue, 24 Mar 2026 00:56:05 GMT',
+    'content-type': 'application/json; charset=utf-8',
+    'content-length': '122',
+    connection: 'keep-alive',
+    perf: '7402827104',
+    server: 'cloudflare envoy',
+    'api-version': '2.160',
+    'cache-control': 'no-cache, no-store, max-age=0',
+    'set-cookie': [
+      'guest_id_marketing=v1%3A177431376588003449; Max-Age=63072000; Expires=Thu, 23 Mar 2028 00:56:05 GMT; Path=/; Domain=.x.com; Secure; SameSite=None',
+      'guest_id_ads=v1%3A177431376588003449; Max-Age=63072000; Expires=Thu, 23 Mar 2028 00:56:05 GMT; Path=/; Domain=.x.com; Secure; SameSite=None',
+      'personalization_id="v1_omg+Ahl/0caK2ghk+cToKA=="; Max-Age=63072000; Expires=Thu, 23 Mar 2028 00:56:05 GMT; Path=/; Domain=.x.com; Secure; SameSite=None',
+      'guest_id=v1%3A177431376588003449; Max-Age=63072000; Expires=Thu, 23 Mar 2028 00:56:05 GMT; Path=/; Domain=.x.com; Secure; SameSite=None',
+      '__cf_bm=aJTWjtcpxO32QtmF2A2q4ozKS0Smwp1urKiwhkQz1f4-1774313765.824311-1.0.1.1-OnieJRRRGp3dEZp4wpQ9bUeWFycIzT6uHOwrtuUD.hy9lxF69QZ6qQMw44LR_vEjwVPn8SEm_QPN5pgR4mDg3PQ_CwIBt73m_hl7MGHVq6oFlGYzMZaQ6FpKMqqMo1cS; HttpOnly; Secure; Path=/; Domain=x.com; Expires=Tue, 24 Mar 2026 01:26:05 GMT'
+    ],
+    'x-access-level': 'read-write',
+    'x-frame-options': 'SAMEORIGIN',
+    'content-encoding': 'gzip',
+    'x-transaction-id': 'e60a3db21ccf19a6',
+    'x-xss-protection': '0',
+    'x-rate-limit-limit': '100',
+    'x-rate-limit-reset': '1774314016',
+    'content-disposition': 'attachment; filename=json.json',
+    'x-content-type-options': 'nosniff',
+    'x-rate-limit-remaining': '89',
+    'x-response-time': '37',
+    'origin-cf-ray': '9e11b6cc696be88c-SEA',
+    'strict-transport-security': 'max-age=631138519; includeSubdomains',
+    'x-served-by': 't4_p',
+    vary: 'accept-encoding',
+    'cf-cache-status': 'DYNAMIC',
+    'cf-ray': '9e11b6cc696be88c-NRT'
+  },
+  rateLimit: { limit: 100, remaining: 89, reset: 1774314016 },
+  data: {
+    detail: 'You are not permitted to perform this action.',
+    type: 'about:blank',
+    title: 'Forbidden',
+    status: 403
+  }
+}
+=== END RAW ERROR ===
+[2026-03-24 00:56:05] ERROR X API error data: {"detail":"You are not permitted to perform this action.","type":"about:blank","title":"Forbidden","status":403}
+[2026-03-24 00:56:05] ERROR Failed for globesns-x: X API forbidden: Request failed with code 403
+[2026-03-24 00:56:05] ERROR Stopping to prevent partial publish state.
