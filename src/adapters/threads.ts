@@ -29,9 +29,7 @@ export class ThreadsAdapter implements SnsAdapter {
       let containerId: string;
 
       if (imagePath) {
-        // For image posts, we need to host the image publicly
         // Threads API requires a public URL for images
-        // For now, post as text with image URL noted in logs
         logger.warn('Threads image upload requires a public image URL. Posting as text only.');
         containerId = await this.createTextContainer(userId, accessToken, post.generated_text);
       } else {
@@ -45,6 +43,12 @@ export class ThreadsAdapter implements SnsAdapter {
       const postId = await this.publishContainer(userId, accessToken, containerId);
 
       logger.success(`Published to Threads: ${postId}`);
+
+      // Post CTA reply with link
+      if (post.should_reply_with_link && post.utm_url) {
+        await this.postCtaReply(userId, accessToken, postId, post);
+      }
+
       return postId;
     } catch (error) {
       throw new Error(
@@ -59,14 +63,21 @@ export class ThreadsAdapter implements SnsAdapter {
   private async createTextContainer(
     userId: string,
     accessToken: string,
-    text: string
+    text: string,
+    replyToId?: string
   ): Promise<string> {
     const url = `${this.baseUrl}/${userId}/threads`;
-    const params = new URLSearchParams({
+    const bodyParams: Record<string, string> = {
       media_type: 'TEXT',
       text,
       access_token: accessToken,
-    });
+    };
+
+    if (replyToId) {
+      bodyParams.reply_to_id = replyToId;
+    }
+
+    const params = new URLSearchParams(bodyParams);
 
     const response = await fetch(url, {
       method: 'POST',
@@ -108,5 +119,40 @@ export class ThreadsAdapter implements SnsAdapter {
 
     const data = await response.json() as { id: string };
     return data.id;
+  }
+
+  /**
+   * Post a CTA reply with link under the main Threads post
+   */
+  private async postCtaReply(
+    userId: string,
+    accessToken: string,
+    parentPostId: string,
+    post: GeneratedPost
+  ): Promise<void> {
+    try {
+      // Small delay before reply
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      const replyText = `📩 購入はこちら👇\n${post.utm_url}`;
+
+      // Create reply container
+      const containerId = await this.createTextContainer(
+        userId,
+        accessToken,
+        replyText,
+        parentPostId
+      );
+
+      // Wait for container to be ready
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Publish the reply
+      const replyId = await this.publishContainer(userId, accessToken, containerId);
+      logger.success(`CTA reply posted under Threads post ${parentPostId}: ${replyId}`);
+    } catch (error) {
+      // Don't fail the whole post if the reply fails
+      logger.warn(`Failed to post CTA reply on Threads: ${error instanceof Error ? error.message : String(error)}`);
+    }
   }
 }

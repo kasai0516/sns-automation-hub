@@ -221,7 +221,7 @@ export class XAdapter implements SnsAdapter {
       // Small delay to avoid hitting rate limits
       await new Promise(resolve => setTimeout(resolve, 1500));
 
-      const replyText = `🔗 フォロワーを増やすならこちら👇\n${post.utm_url}`;
+      const replyText = `📩 購入はこちら👇\n${post.utm_url}`;
 
       await rwClient.v2.tweet({
         text: replyText,
