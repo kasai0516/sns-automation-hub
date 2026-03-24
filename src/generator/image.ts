@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import { writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { GeneratedPost } from '../config/types.js';
@@ -8,19 +8,68 @@ import { logger } from '../utils/logger.js';
 const __dirname = resolve(fileURLToPath(import.meta.url), '..');
 const PROJECT_ROOT = resolve(__dirname, '..', '..');
 const IMAGES_DIR = join(PROJECT_ROOT, 'data', 'images');
+const STOCK_DIR = join(IMAGES_DIR, 'stock');
 
 /**
- * Generate a promotional image for a post using DALL-E 3
- * Returns the local file path to the generated image
+ * Get a post image — uses stock images if available, falls back to DALL-E 3.
+ * Stock images are rotated based on a simple hash of the post content.
  */
 export async function generatePostImage(post: GeneratedPost): Promise<string | null> {
+  // Try stock images first (free)
+  const stockImage = pickStockImage(post);
+  if (stockImage) {
+    logger.info(`Using stock image: ${stockImage.split(/[/\\]/).pop()}`);
+    return stockImage;
+  }
+
+  // Fallback: generate with DALL-E 3 (costs $0.04/image)
+  logger.warn('No stock images found. Falling back to DALL-E 3 generation.');
+  return generateWithDallE(post);
+}
+
+/**
+ * Pick a stock image from data/images/stock/ using content-based rotation.
+ * Returns null if no stock images are available.
+ */
+function pickStockImage(post: GeneratedPost): string | null {
+  if (!existsSync(STOCK_DIR)) return null;
+
+  const files = readdirSync(STOCK_DIR).filter(f =>
+    f.endsWith('.png') || f.endsWith('.jpg') || f.endsWith('.webp')
+  );
+
+  if (files.length === 0) return null;
+
+  // Simple hash from post content for deterministic but varied selection
+  const hash = simpleHash(post.generated_text + post.angle + new Date().toISOString().slice(0, 13));
+  const index = hash % files.length;
+
+  return join(STOCK_DIR, files[index]);
+}
+
+/**
+ * Simple string hash for image rotation (not cryptographic)
+ */
+function simpleHash(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return Math.abs(hash);
+}
+
+/**
+ * Generate image with DALL-E 3 (fallback, costs $0.04/image)
+ */
+async function generateWithDallE(post: GeneratedPost): Promise<string | null> {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
     logger.warn('OPENAI_API_KEY is not set. Skipping image generation.');
     return null;
   }
 
-  // Ensure images directory exists
   if (!existsSync(IMAGES_DIR)) {
     mkdirSync(IMAGES_DIR, { recursive: true });
   }
@@ -47,7 +96,6 @@ export async function generatePostImage(post: GeneratedPost): Promise<string | n
       throw new Error('DALL-E returned no image data');
     }
 
-    // Save image locally
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const filename = `${post.account_profile_id}_${timestamp}.png`;
     const filepath = join(IMAGES_DIR, filename);
@@ -75,7 +123,6 @@ function buildImagePrompt(post: GeneratedPost): string {
 
   const serviceContext = serviceLabels[post.service_name] || post.service_name;
 
-  // Map angle types to visual styles
   const angleStyles: Record<string, string> = {
     pain_point: 'frustrated person at computer, problem visualization, warm empathetic colors',
     comparison: 'before/after split screen, transformation, contrast visuals',
