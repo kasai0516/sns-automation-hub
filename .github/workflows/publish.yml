@@ -4,10 +4,12 @@ on:
   schedule:
     # GlobeSNS × X: 毎時37分に投稿
     - cron: '37 * * * *'
+    # GlobeSNS × Threads: 毎時47分に投稿
+    - cron: '47 * * * *'
   workflow_dispatch:
     inputs:
       account:
-        description: 'Account profile ID (e.g. globesns-x)'
+        description: 'Account profile ID (e.g. globesns-x, globesns-threads)'
         required: false
         default: 'globesns-x'
       confirm:
@@ -27,6 +29,9 @@ jobs:
       GLOBESNS_X_API_SECRET: ${{ secrets.GLOBESNS_X_API_SECRET }}
       GLOBESNS_X_ACCESS_TOKEN: ${{ secrets.GLOBESNS_X_ACCESS_TOKEN }}
       GLOBESNS_X_ACCESS_SECRET: ${{ secrets.GLOBESNS_X_ACCESS_SECRET }}
+      # GlobeSNS × Threads credentials
+      GLOBESNS_THREADS_ACCESS_TOKEN: ${{ secrets.GLOBESNS_THREADS_ACCESS_TOKEN }}
+      GLOBESNS_THREADS_USER_ID: ${{ secrets.GLOBESNS_THREADS_USER_ID }}
 
     steps:
       - uses: actions/checkout@v4
@@ -46,7 +51,12 @@ jobs:
           if [ -n "${{ github.event.inputs.account }}" ]; then
             echo "id=${{ github.event.inputs.account }}" >> $GITHUB_OUTPUT
           else
-            echo "id=globesns-x" >> $GITHUB_OUTPUT
+            MINUTE=$(date -u +%M)
+            case $MINUTE in
+              37) echo "id=globesns-x" >> $GITHUB_OUTPUT ;;
+              47) echo "id=globesns-threads" >> $GITHUB_OUTPUT ;;
+              *)  echo "id=globesns-x" >> $GITHUB_OUTPUT ;;
+            esac
           fi
 
       - name: Generate and publish post
