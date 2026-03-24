@@ -47,6 +47,9 @@ program
       const provider = getLlmProvider();
       validateEnv(provider);
 
+      const failedAccounts: string[] = [];
+      let successCount = 0;
+
       for (const account of accounts) {
         logger.divider();
 
@@ -87,26 +90,35 @@ program
               char_count: post.generated_text.length,
               image: imagePath || 'none',
             });
+            successCount++;
           } else {
             // Publish
             const adapter = getAdapter(account.platform);
             const platformPostId = await adapter.publish(post, account, imagePath ?? undefined);
             saveToHistory(post, 'published', platformPostId);
             logger.success(`✓ Published: ${account.account_profile_id} → ${platformPostId}`);
+            successCount++;
           }
         } catch (error) {
           logger.error(
             `Failed for ${account.account_profile_id}: ${error instanceof Error ? error.message : String(error)}`
           );
-          if (mode === 'publish') {
-            logger.error('Stopping to prevent partial publish state.');
-            process.exit(1);
-          }
+          failedAccounts.push(account.account_profile_id);
         }
       }
 
       logger.divider();
-      logger.success('Done.');
+
+      if (failedAccounts.length > 0) {
+        logger.warn(`Failed accounts (${failedAccounts.length}): ${failedAccounts.join(', ')}`);
+      }
+
+      if (successCount > 0) {
+        logger.success(`Done. ${successCount} succeeded, ${failedAccounts.length} failed.`);
+      } else {
+        logger.error('All accounts failed.');
+        process.exit(1);
+      }
     } catch (error) {
       logger.error(`Fatal: ${error instanceof Error ? error.message : String(error)}`);
       process.exit(1);

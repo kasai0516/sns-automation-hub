@@ -66,6 +66,8 @@ jobs:
           fi
 
       - name: Generate and publish post
+        id: publish
+        continue-on-error: true
         run: npx tsx src/cli/index.ts post --account ${{ steps.account.outputs.id }} --mode publish
 
       - name: Commit history
