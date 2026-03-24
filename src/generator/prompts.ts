@@ -4,12 +4,10 @@ import type { AngleType, Platform, PostType, XPostMode } from '../config/types.j
  * 8 角度の訴求テンプレート
  * 役立つ情報配信 (60%) + 自社PR (40%) のバランス
  *
- * X アルゴリズム最適化:
- * - ハッシュタグなし（リーチ低下を防ぐ）
- * - 本文にURL含めない（インプレッション激減を防ぐ）
- * - 会話を生むような投稿（リプライ・引用RTを促進）
- * - 長文ポスト推奨（滞在時間↑ → エンゲージメント評価↑）
- * - 問いかけ・意見表明で反応を誘発
+ * 全体の方針（アルゴリズム最適化）:
+ * - Bot感（優等生的な「〜です」「〜ます」の連続）を完全排除。実在するプロの「生の声」「話し言葉」を模倣。
+ * - 独自の学び（インサイト、反直感的な事実、失敗からの教訓）を必ず含める。
+ * - 押し付けがましい宣伝を避け、共感と対話（リプライ）を誘発する。
  */
 export const ANGLE_TEMPLATES: Record<AngleType, {
   label: string;
@@ -22,33 +20,31 @@ export const ANGLE_TEMPLATES: Record<AngleType, {
   educational: {
     label: '教育コンテンツ型',
     postType: 'educational',
-    instruction: `SNS運用やマーケティングに関する有益な知見を発信する。
-サービスの直接的な宣伝はしない。純粋に「この人の投稿は勉強になる」と思わせる内容。
-データや具体例を含めて説得力を持たせる。
-最後に問いかけを入れてリプライを促すのが理想。`,
-    exampleStructure: `[知見やデータ] → [なぜそうなるか] → [実践アドバイス] → [問いかけ]`,
+    instruction: `「みんなこう思ってるけど、実は違う」という反直感的な事実（Counter-intuitive fact）や、生々しい気づきを語る。
+教科書的なノウハウではなく、現場で手を動かしている人間ならではの「学び」。
+読んだ人が「なるほど、明日から構成を変えてみよう」など具体的なアクションを思いつく内容にする。
+宣伝は一切しない。`,
+    exampleStructure: `[一般的に言われていることへの疑問 / 意外な事実] → [現場でのリアルな気づき・理由] → [明日から使える具体的なアクション] → [オープンな問いかけ]`,
     includeServiceMention: false,
   },
 
   trend: {
     label: 'トレンド・業界分析型',
     postType: 'educational',
-    instruction: `SNS業界の動向やアルゴリズムの変化について考察する。
-「〜が変わった」「〜の傾向が出てきた」など、業界の動きをキャッチアップしている印象を与える。
-自分なりの見解を述べることで、単なるニュースシェアではなく「考えている人」として見せる。
-サービスの宣伝は一切しない。`,
-    exampleStructure: `[業界の動き / 変化の指摘] → [それが意味すること] → [自分の見解] → [みなさんはどう思いますか？]`,
+    instruction: `SNS業界やアルゴリズムの最新の動きに対する「自分なりの鋭い考察」を語る。
+ニュースの単なるシェアではなく、「これってつまり〇〇の時代が終わったってことだよね」のように、裏にある意味を言語化する。
+宣伝は一切しない。`,
+    exampleStructure: `[最近起きている具体的な変化 / トレンド] → [多くの人が見落としている「その裏にある本質」] → [だから今はこう動くべき、という考察] → [同意を求める、または意見を聞く問いかけ]`,
     includeServiceMention: false,
   },
 
   platform_tips: {
     label: 'プラットフォーム攻略型',
     postType: 'educational',
-    instruction: `Instagram / TikTok / YouTube / X のどれかに特化した運用テクニックを投稿。
-ガイド記事の内容をベースに、すぐ使える具体的なテクニックを1つだけ切り出す。
-「これ知らない人多いけど」「やってる人少ないけど」等の切り口で注目を集める。
-サービスの宣伝はしない。`,
-    exampleStructure: `[具体的なテクニック1つ] → [なぜ効くのか] → [どうやるか] → [試したことある人いますか？]`,
+    instruction: `X、Instagram、TikTok、YouTubeいずれかの「やってる人が少ないけど確実に効く泥臭いテクニック」を1つだけ紹介する。
+「これ魔法じゃないんだけど…」というトーンで、地に足のついたノウハウを語る。
+宣伝はしない。`,
+    exampleStructure: `[すぐ真似できるマニアックなテクニック1つ] → [なぜそれが効くのか、アルゴリズムや心理学的な背景] → [実際のやり方や注意点] → [似たような経験ある？等の問いかけ]`,
     includeServiceMention: false,
   },
 
@@ -56,55 +52,48 @@ export const ANGLE_TEMPLATES: Record<AngleType, {
   pain_point: {
     label: '課題提起型',
     postType: 'problem_awareness',
-    instruction: `SNS運用者が日ごろ感じている課題を言語化して共感を得る。
-「わかる」「それな」と思わせる投稿。
-解決策はサービスを直接示すのではなく「プロフに解決策を載せてます」と自然に導線を引く。
-嘘臭さゼロ。リアルな悩みとして書くこと。`,
-    exampleStructure: `[リアルな悩みの提示] → [悩みの深掘り・共感] → [自分はこう解決してきた（示唆）]`,
+    instruction: `「毎日投稿してるのに全然伸びない時のしんどさ」など、運用者の血の通った痛みに深く共感する。
+「わかる、あれ辛いよね」というピア（仲間）としての目線。上から目線の指導は絶対にしない。
+その苦しみをどう乗り越えるかという示唆の中で、ごく自然にサービスの存在（解決策）を匂わせる。`,
+    exampleStructure: `[「あるある」と頷ける生々しい失敗や辛い経験] → [なぜそこに陥ってしまうのかの言語化] → [泥沼から抜け出した方法（ここで解決策を匂わせる）]`,
     includeServiceMention: false,
   },
 
   benefit: {
     label: '価値提案型',
     postType: 'soft_promo',
-    instruction: `フォロワーが増えることの具体的なメリットを語る。
-「フォロワーが〇人になったら何が変わるか」という視点で書く。
-自然にサービスの存在を匂わせるが、直接的なセールスは避ける。
-信頼性のある数字や事実を含める。`,
-    exampleStructure: `[ビフォーアフターの提示] → [具体的なメリット] → [興味があればプロフから]`,
+    instruction: `「フォロワーが数字として増えること」ではなく、「増えた先にある劇的な変化（例：突然DMで仕事の依頼が来るようになる等）」の喜びを語る。
+ビフォーアフターの感情の動きにフォーカスする。セールス感を出さず、メリットのお裾分けというトーン。`,
+    exampleStructure: `[数字がない時期の限界感] → [あるラインを超えた時の世界の変化（具体的に）] → [どうやってその壁を越えるかの示唆] → [興味があればプロフから、と軽く流す]`,
     includeServiceMention: true,
   },
 
   case_study: {
     label: '実体験・事例型',
     postType: 'soft_promo',
-    instruction: `口コミや事例をベースに「こういう結果が出た」という投稿を作る。
-第三者的な視点で語ることで信頼感を持たせる。
-実際の数字や変化を具体的に述べる。
-過度な誇張は絶対に避ける。`,
-    exampleStructure: `[事例の紹介] → [具体的な変化・数字] → [こういう方法もありという示唆]`,
+    instruction: `「最近相談に乗ったアカウントの話なんだけど…」のような、リアルな事例の共有。
+泥臭いBeforeから、どうやって突破したか（具体的な数字の変化を交えて）を語る。
+嘘くさい「爆増しました！」ではなく、「最初は苦戦したけど、これを入れたら徐々に反応が変わって、最終的に3倍になった」という現実的なストーリー。`,
+    exampleStructure: `[事例の紹介（どんな状態からスタートしたか）] → [施策と、その時の数字のリアルな変化] → [ここから得られる学び] → [プロフへの軽い導線]`,
     includeServiceMention: true,
   },
 
   comparison: {
     label: '比較検証型',
     postType: 'soft_promo',
-    instruction: `「自力で増やす場合」と「専門サービスを使う場合」を客観的に対比する。
-または「よくある失敗パターン」と「うまくいくパターン」の比較。
-フェアで客観的なトーンを保つこと。どちらかに肩入れしすぎない。
-読者が自分で判断できる材料を提示する。`,
-    exampleStructure: `[一般的なアプローチの問題点] → [別のアプローチとの比較] → [客観的な結論]`,
+    instruction: `「自力でゼロから頑張る」と「プロの土台作り（サービス利用）を取り入れる」違いを、フラットかつ客観的に比較する。
+どちらか一方を完全否定するのではなく、「使い分け」や「フェーズごとの正解」として語る。
+大人の冷静な分析トーン。`,
+    exampleStructure: `[よくある「自力vs外注」のような比較テーマ] → [それぞれのメリットと、陥りやすい罠] → [フェーズによる使い分けの結論] → [プロフへの軽い導線]`,
     includeServiceMention: true,
   },
 
   direct_cta: {
     label: 'サービス紹介型',
     postType: 'direct_cta',
-    instruction: `サービスを紹介する。ただし「広告感」を極力排除する。
-「最近使ってるサービスが良い感じ」「これ地味にすごいと思った」のような
-友人に薦めるトーンで書く。
-スペックではなく体験を語ること。`,
-    exampleStructure: `[自然な導入] → [使ってみての感想（体験ベース）] → [気になったらプロフから]`,
+    instruction: `自社サービスを堂々と紹介するが、「買って！」という押し売りではなく、「これ作ったんだけど、ここがめっちゃ便利だから見てほしい」という開発者/愛用者目線の熱量を込める。
+スペックではなく「どんなペインを解決するか」を熱く語る。`,
+    exampleStructure: `[なぜこのサービスが必要なのか（開発の原体験や気づき）] → [他の手段と何が違うのか（コアバリュー）] → [誰に届けたいか] → [プロフから見てみて、という明るい導線]`,
     includeServiceMention: true,
   },
 };
@@ -117,19 +106,30 @@ export const PLATFORM_CONSTRAINTS: Record<Platform, {
 }> = {
   x: {
     maxLength: 280,
-    toneGuidance: `トーン:
-- 1〜2文ごとに改行を入れて読みやすくする
-- 空行で段落を分ける
-- 短文リズムで書く（1文が長すぎないようにする）
-- 自然な日本語で、ビジネスカジュアルなトーン
-- 「。」で終わる文と体言止めをバランスよく使う`,
+    toneGuidance: `【X（Twitter）特化のアルゴリズム＆トーン指示】
+1. 滞在時間の最大化: 
+   - 1行目は短くキャッチーな「フック」にする。（「スマホを開いて続きを読む」アクションを誘発）
+   - 2〜3行ごとに改行・空行を入れ、視覚的な圧迫感をなくす。
+   - 要点は箇条書き（・や番号）を使い、スクロールを止める工夫をする。
+2. エンゲージメント誘発: 
+   - 結びは必ず「これについてどう思う？」「〇〇な経験ある？」など、リプライしやすいA/Bの問いかけ、または経験を聞く問いかけにする。
+3. トーン: 
+   - 「〜です」「〜ます」の連続を排除。
+   - 体言止め（〇〇の時代。／〇〇という事実。）、倒置法（本当に必要なのは〇〇。実は。）を積極的に使う。
+   - 「結論から言うと」「ここだけの話」などの話し言葉を混ぜる。`,
   },
   threads: {
     maxLength: 500,
-    toneGuidance: `トーン:
-- Threads はカジュアル寄り、会話的なトーン推奨
-- 長めの文章もOK
-- 適度に改行を入れて読みやすく`,
+    toneGuidance: `【Threads特化のアルゴリズム＆トーン指示】
+1. 完全な対話・共感ベース:
+   - Threadsは有益なノウハウの羅列（Twitter的）を嫌う傾向がある。「今日こんなことがあってさ...」「これって私だけ？」というような「独り言からの気づき」スタイルにする。
+   - 人間としての感情（驚愕、悩み、喜びなど）を本文にしっかり乗せる。
+2. 視認性:
+   - Threadsは文字が太く・大きく表示されるため、文字が詰まっていると離脱される。短文でテンポよく改行し、空白を贅沢に使う。
+3. トーン:
+   - Xよりもさらにカジュアル。仲のいい仕事仲間に酒場で語るようなトーン。
+   - 「〜だよね」「〜だと思うんだよね」「〜ってあるあるじゃない？」といった柔らかい口調を混ぜる。
+   - 最後にふんわりと「みんなはどうしてる？」と聞いてコミュニティの会話を促す。`,
   },
 };
 
@@ -143,28 +143,23 @@ export const MODE_GUIDANCE: Record<XPostMode, {
   single: {
     label: '通常（single）',
     charGuidance: '220〜280文字目安。280文字をフルに使い切ること。',
-    formatGuidance: `フォーマット:
-- 1〜2文ごとに改行
-- 空行で段落を分ける
-- 最後に問いかけがあると理想的`,
+    formatGuidance: `- 短く鋭いパンチラインの集まりにする。
+- 限られた文字数に「意外性」と「アクション」を詰め込む。`,
   },
   thread: {
     label: 'スレッド（thread）',
-    charGuidance: '400〜800文字目安。生成後にスレッド分割される。',
-    formatGuidance: `フォーマット:
-- 深い考察や解説を展開する
-- 「。」「！」「？」で文を区切る（分割の目印になる）
-- 段落の切れ目がスレッド分割ポイントになるので、意味の区切りで空行を入れる
-- 冒頭のツイートが一番重要（タイムラインに表示される）`,
+    charGuidance: '400〜800文字目安。どんなに長くても全体で絶対に1000文字を超えないこと。',
+    formatGuidance: `- 1ツイート目（冒頭段落）で強力な問題提起と結論のチラ見せを行う。
+- 2ツイート目以降で、具体的な理由やデータ、エピソードを深掘りする。
+- 最終ツイートで見事な着地（Takeaway）と問いかけを行う。
+- 意味の区切り（ツイートの切れ目）には必ず空行を入れる。`,
   },
   longform_experimental: {
     label: 'ロングフォーム（実験的）',
     charGuidance: '500〜1000文字目安。Xプレミアムの長文投稿機能を使う。',
-    formatGuidance: `フォーマット:
-- 長文を活かした詳細な考察
-- 段落ごとに空行で区切る
-- 読みやすいリズムを意識
-- 見出し的な文から始める段落構成`,
+    formatGuidance: `- ミニブログ記事のような構成。
+- サブ見出し（【】や■など）を使って、流し読みできるように構造化する。
+- 深い洞察や長めのストーリーテリングを展開する。`,
   },
 };
 
@@ -191,7 +186,6 @@ export function selectAngle(recentAngles: AngleType[]): AngleType {
     return 'educational';
   }
 
-  // 使用回数カウント
   const counts = new Map<AngleType, number>();
   for (const angle of allAngles) {
     counts.set(angle, 0);
@@ -202,7 +196,6 @@ export function selectAngle(recentAngles: AngleType[]): AngleType {
 
   const sorted = [...allAngles].sort((a, b) => (counts.get(a) || 0) - (counts.get(b) || 0));
 
-  // PostType の分布バランスをチェック
   const postTypeCounts: Record<PostType, number> = {
     educational: 0,
     soft_promo: 0,
@@ -221,7 +214,6 @@ export function selectAngle(recentAngles: AngleType[]): AngleType {
   const promoRatio = postTypeCounts.soft_promo / total;
   const probRatio = postTypeCounts.problem_awareness / total;
 
-  // 教育系が少なければ優先
   if (eduRatio < 0.3) {
     const eduAngles = sorted.filter(a => ANGLE_TEMPLATES[a].postType === 'educational');
     if (eduAngles.length > 0) return eduAngles[0];
@@ -251,72 +243,64 @@ export function buildGenerationPrompt(options: {
   targetUrl: string;
   postMode?: XPostMode;
 }): string {
-  const { platform, angle, serviceName, referenceSummary, bannedPhrases, ctaPatterns, targetUrl, postMode } = options;
+  const { platform, angle, referenceSummary, bannedPhrases, postMode } = options;
   const template = ANGLE_TEMPLATES[angle];
   const constraints = PLATFORM_CONSTRAINTS[platform];
 
-  // Mode-specific guidance (X only)
   const mode = postMode || 'single';
   const modeGuide = platform === 'x' ? MODE_GUIDANCE[mode] : null;
   const charInstruction = modeGuide
-    ? `投稿モード: ${modeGuide.label}\n文字数ガイド: ${modeGuide.charGuidance}`
-    : `最大文字数: ${constraints.maxLength}文字（長めに使い切ること）`;
+    ? `【文章量・構造ガイド】\n投稿モード: ${modeGuide.label}\n文字数目安: ${modeGuide.charGuidance}`
+    : `【文章量ガイド】\n最大文字数: ${constraints.maxLength}文字（なるべく長く、情報量を濃くすること）`;
   const formatInstruction = modeGuide
     ? modeGuide.formatGuidance
     : '';
 
   const isPromoPost = template.includeServiceMention;
-
   const ctaInstruction = isPromoPost
-    ? `## CTA（控えめに）
-サービスのURLは本文中に絶対入れない。
-代わりに「気になったらプロフから」「プロフにリンク置いてます」等の自然な一言に留める。
-全体の文脈に溶け込むように。浮いた感じの宣伝は絶対NG。`
-    : `## CTA
-この投稿はCTAを一切含めない。サービス名も出さない。純粋に有益な情報配信。`;
+    ? `## CTA（導線）の指示
+直接的なURLの埋め込みは【絶対禁止】。
+代わりに、文末で「プロフにリンク置いてます」「詳しくはプロフから」といった自然な誘導を1文書くだけにとどめる。
+セールス感を出さず、サラッと流すこと。`
+    : `## CTAの指示
+本投稿は純粋な価値提供（教育・共感）が目的であるため、サービスへの勧誘や「プロフへ」といった誘導は一切含めないこと。`;
 
-  return `あなたはSNSマーケティングの専門家アカウントの運用者です。
-信頼性と専門性が命。有料サービスを扱うアカウントなので、品格を保つこと。
+  return `あなたはSNSで絶大な支持を集める、人間味あふれる凄腕のSNSマーケター（実在する生身の人間）です。
+AI特有の無味乾燥な「〜です」「〜ます」の乱発を絶対に避け、生々しい経験とインサイトに基づく「読者の心を動かす投稿」を作ってください。
 
-## 投稿タイプ: ${template.label}
+## 今回の投稿アングル: ${template.label}
 ${template.instruction}
 
-## 構成
+## 構造イメージ
 ${template.exampleStructure}
 
-## プラットフォーム制約（${platform === 'x' ? 'X' : 'Threads'}）
+## プラットフォーム特化の制約（${platform === 'x' ? 'X' : 'Threads'}）
 ${charInstruction}
-${constraints.toneGuidance}
 ${formatInstruction}
 
-## 参照情報（投稿のネタとして自由に使う）
+${constraints.toneGuidance}
+
+## 参照情報（ネタ引き出し用）
 ${referenceSummary}
 
 ${ctaInstruction}
 
-## 絶対禁止事項
-- 以下の表現は禁止: ${bannedPhrases.join('、')}
-- ハッシュタグを入れない（# で始まるタグは一切NG）
-- URLやリンクを本文中に入れない
-- 「!」の連発
-- 絵文字の多用
-- 「〜してみませんか？」等の安っぽい誘導
-- 「今だけ」「限定」「残りわずか」「お見逃しなく」等の煽り
-- 翻訳調・不自然な日本語
-- ボット感のある定型文
-- 「あなた」という呼びかけの多用
+## 🛑 【絶対禁止事項・レッドカード】
+- 以下のワードは死語・スパム扱いとして絶対に使用禁止: ${bannedPhrases.join('、')}, 爆増, バズる, 絶対に, 100%, 今すぐ, おすすめです
+- AI構文の禁止: 「〜であることが重要です」「〜を検討してみてはいかがでしょうか」「〜という傾向があります」「〜かもしれません」等の優等生的な表現は不合格。
+- 挨拶の禁止: 「皆さんこんにちは」「いかがお過ごしですか」等は不要。
+- 無駄な記号の禁止: ハッシュタグ（#〇〇）、本文中のURL、絵文字の過剰な使用、「!」の連続。
+- 読者を「あなた」と呼称する手法の乱用禁止。
 
-## 品格ガイドライン
-- ビジネスパーソン向けの信頼あるアカウントのトーン
-- 「この人はわかってるな」と思わせる知的な切り口
-- 断定ではなく「〜という傾向がある」「〜だと考えてます」等
-- データや具体例で説得力を持たせる
-- 読む人の知性を尊重する（上から目線にしない）
+## 💡 【品質を満たすためのチェックリスト】
+1. ボットではなく、血の通った「一人の人間」が書いた文章に見えるか？
+2. 「一般論」で終わらず、「反直感的な事実」や「意外な気づき」が含まれているか？
+3. (Xの場合) スクロールを止めたくなる短い1行目があるか？
+4. (Threadsの場合) 思わず「わかる！」「私はこう思う」と返信したくなる自己開示と共感があるか？
 
-## 出力形式
-以下のJSON形式で出力。マークダウンのコードブロック不要。
+## 出力形式（JSONのみ出力）
 {
-  "hook": "投稿の冒頭1行（注意を引く部分）",
-  "generated_text": "投稿文の全文。ハッシュタグなし。URLなし。改行を適切に含めること。"
+  "hook": "投稿の冒頭1行（タイムラインで確実に目を引くパンチライン）",
+  "generated_text": "投稿文の全文。ハッシュタグ・URLなし。改行・空行を的確に配置した、生々しい話し言葉のテキスト。"
 }`;
 }

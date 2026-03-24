@@ -187,9 +187,9 @@ function validateGeneratedText(
   if (platform === 'x') {
     // For X, use weighted character count
     const xLen = countXLength(text);
-    // Allow up to 1200 chars for thread/longform (will be split or posted as longform)
-    if (xLen > 1200) {
-      return `X text too long even for thread mode (${xLen} X-weighted chars). Max 1200.`;
+    // Allow up to 2000 chars for thread/longform (will be split or posted as longform)
+    if (xLen > 2000) {
+      return `X text too long even for thread mode (${xLen} X-weighted chars). Max 2000.`;
     }
   } else {
     // Threads max length
