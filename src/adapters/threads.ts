@@ -26,14 +26,20 @@ export class ThreadsAdapter implements SnsAdapter {
     logger.info(`Publishing to Threads via ${account.account_name}...`);
 
     try {
+      // For Threads, append the CTA link directly to the post text
+      // (Threads API lacks reply permission, so we embed it in the main post)
+      let postText = post.generated_text;
+      if (post.should_reply_with_link && post.utm_url) {
+        postText += `\n\n📩 購入はこちら👇\n${post.utm_url}`;
+      }
+
       let containerId: string;
 
       if (imagePath) {
-        // Threads API requires a public URL for images
         logger.warn('Threads image upload requires a public image URL. Posting as text only.');
-        containerId = await this.createTextContainer(userId, accessToken, post.generated_text);
+        containerId = await this.createTextContainer(userId, accessToken, postText);
       } else {
-        containerId = await this.createTextContainer(userId, accessToken, post.generated_text);
+        containerId = await this.createTextContainer(userId, accessToken, postText);
       }
 
       // Wait for container to be ready (Threads API requirement)
@@ -43,11 +49,6 @@ export class ThreadsAdapter implements SnsAdapter {
       const postId = await this.publishContainer(userId, accessToken, containerId);
 
       logger.success(`Published to Threads: ${postId}`);
-
-      // Post CTA reply with link
-      if (post.should_reply_with_link && post.utm_url) {
-        await this.postCtaReply(userId, accessToken, postId, post);
-      }
 
       return postId;
     } catch (error) {
