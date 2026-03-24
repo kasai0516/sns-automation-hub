@@ -48,15 +48,18 @@ jobs:
       - name: Determine account from schedule
         id: account
         run: |
-          if [ -n "${{ github.event.inputs.account }}" ]; then
+          if [ "${{ github.event_name }}" == "schedule" ]; then
+            if [ "${{ github.event.schedule }}" == "37 * * * *" ]; then
+              echo "id=globesns-x" >> $GITHUB_OUTPUT
+            elif [ "${{ github.event.schedule }}" == "47 * * * *" ]; then
+              echo "id=globesns-threads" >> $GITHUB_OUTPUT
+            else
+              echo "id=globesns-x" >> $GITHUB_OUTPUT
+            fi
+          elif [ -n "${{ github.event.inputs.account }}" ]; then
             echo "id=${{ github.event.inputs.account }}" >> $GITHUB_OUTPUT
           else
-            MINUTE=$(date -u +%M)
-            case $MINUTE in
-              37) echo "id=globesns-x" >> $GITHUB_OUTPUT ;;
-              47) echo "id=globesns-threads" >> $GITHUB_OUTPUT ;;
-              *)  echo "id=globesns-x" >> $GITHUB_OUTPUT ;;
-            esac
+            echo "id=globesns-x" >> $GITHUB_OUTPUT
           fi
 
       - name: Generate and publish post
