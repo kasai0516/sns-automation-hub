@@ -5,7 +5,7 @@ import type {
 import { getServiceForAccount } from '../config/loader.js';
 import { fetchMultipleSources } from '../source/fetcher.js';
 import { summarizeSources } from '../source/summarizer.js';
-import { buildGenerationPrompt, selectAngle, ANGLE_TEMPLATES } from './prompts.js';
+import { buildGenerationPrompt, selectAngle, selectHashtags, ANGLE_TEMPLATES } from './prompts.js';
 import { callLlm } from './llm-client.js';
 import { buildUtmUrl } from '../utm/builder.js';
 import { checkDuplicate, getRecentAngles } from '../dedupe/index.js';
@@ -53,12 +53,12 @@ export async function generatePost(
   // 2. Summarize sources + service info
   const referenceSummary = summarizeSources(sources, service);
 
-  // 3. Select angle
+  // 3. Select angle (weighted + consecutive suppression)
   const recentAngles = getRecentAngles(account.account_profile_id);
   const angle = overrideAngle || selectAngle(recentAngles);
   const template = ANGLE_TEMPLATES[angle];
 
-  logger.info(`Selected angle: ${template.label} (${angle})`);
+  logger.info(`Selected angle: ${template.label} (${angle}) [category: ${template.category}, cta: ${template.ctaStrength}]`);
 
   // 4. Pick a reference URL for the link
   const targetRefUrl = pickTargetUrl(service);
@@ -112,6 +112,11 @@ export async function generatePost(
 
     logger.info(`Post mode: ${postMode} | X-length: ${xLength}${threadTexts ? ` | Thread: ${threadTexts.length} tweets` : ''}`);
 
+    // Select hashtags based on platform & angle
+    const hashtags = llmResult.hashtags && llmResult.hashtags.length > 0
+      ? llmResult.hashtags
+      : selectHashtags(account.platform, angle);
+
     const post: GeneratedPost = {
       platform: account.platform,
       service_name: service.service_name,
@@ -121,7 +126,7 @@ export async function generatePost(
       angle,
       post_type: template.postType,
       hook: llmResult.hook,
-      hashtags: [],
+      hashtags,
       generated_text: generatedText,
       reference_summary: referenceSummary.slice(0, 500),
       should_reply_with_link: template.includeServiceMention,

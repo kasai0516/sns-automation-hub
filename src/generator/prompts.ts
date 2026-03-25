@@ -1,118 +1,133 @@
-import type { AngleType, Platform, PostType, XPostMode } from '../config/types.js';
+import type { AngleType, ContentCategory, Platform, PostType, XPostMode } from '../config/types.js';
 
-/**
- * SEO/検索流入キーワード一覧
- * 毎投稿でこの中から1〜3個を自然に文中に盛り込む
- */
-const SEO_KEYWORDS = [
-  // メインキーワード
-  'フォロワー購入', 'フォロワー 増やす', 'フォロワー 買う',
-  // プラットフォーム別
-  'インスタ フォロワー', 'Instagram フォロワー',
-  'X フォロワー', 'Twitter フォロワー',
-  'TikTok フォロワー', 'TikTok いいね',
-  'YouTube 登録者', 'YouTube 収益化', 'YouTube チャンネル登録',
-  // アクション系
-  'いいね 増やす', 'いいね 購入', '再生回数 増やす',
-  'フォロワー 増やし方', 'フォロワー 増加',
-  // ニーズ系
-  'SNS 集客', 'SNS 初速', 'SNS マーケティング',
-  'アカウント 育てる', 'インフルエンサー なりたい',
-  // コスパ・安全系
-  'フォロワー 安い', 'フォロワー 安全', 'フォロワー 凍結されない',
-  'フォロワー 減少保証',
-];
+// ===== 5カテゴリ テンプレート =====
 
-/**
- * 8 角度の訴求テンプレート
- * 全投稿で「リプ欄にリンクを貼る」ため、本文中にCTAは不要。
- * 代わりにSEOキーワードを自然に含めることに集中する。
- */
-export const ANGLE_TEMPLATES: Record<AngleType, {
+export interface AngleTemplate {
   label: string;
+  category: ContentCategory;
   postType: PostType;
+  /** 重み: 出現確率の相対値 */
+  weight: number;
+  /** プロンプトへの投稿指示 */
   instruction: string;
+  /** 構造の例 */
   exampleStructure: string;
-  includeServiceMention: boolean;  // true = リプ欄にリンクを自動投稿
-}> = {
-  educational: {
-    label: '現実突きつけ型',
+  /** CTA強度: 0=なし, 1=軽い案内, 2=サービス紹介, 3=直球訴求 */
+  ctaStrength: number;
+  /** リプ欄にリンクを自動投稿するか */
+  includeServiceMention: boolean;
+  /** エンゲージメント質問を末尾に付けるか: 'required' | 'optional' | 'none' */
+  engagementQuestion: 'required' | 'optional' | 'none';
+}
+
+export const ANGLE_TEMPLATES: Record<AngleType, AngleTemplate> = {
+  // ===== 価値提供: 30% =====
+  tips_practical: {
+    label: '実践SNS運用テクニック',
+    category: 'value',
     postType: 'educational',
-    instruction: `「いい投稿を作ればフォロワーは増える」という綺麗事を否定する。
-現実として数字（フォロワー数）がないアカウントの投稿は誰も読まない。
-だから「フォロワー購入」や「フォロワーを買う」という選択肢は戦略としてアリだと主張する。`,
-    exampleStructure: `[綺麗事の否定] → [SNSの残酷な現実] → [だからフォロワーを買って初速を作るのが賢い]`,
-    includeServiceMention: true,
+    weight: 30,
+    instruction: `SNS運用の具体的で実践的なテクニックを共有する。
+以下のいずれかのテーマを扱う：
+- 投稿時間の考え方（ゴールデンタイム、曜日別の傾向）
+- 伸びる投稿の型（冒頭の引き、改行の使い方、ストーリー構成）
+- 初期アカウント運用の注意点（プロフィール、初投稿、最初の100人）
+- 継続しやすい運用方法（テンプレ化、バッチ投稿、ネタ帳の作り方）
+- ありがちな失敗例（ハッシュタグ乱用、投稿頻度ミス、自己満投稿）
+
+保存したくなる、人に教えたくなる内容にすること。
+サービスの宣伝は一切しない。純粋な価値提供。`,
+    exampleStructure: `[具体的なテクニック紹介] → [なぜ効くのか] → [すぐ試せるアクション]`,
+    ctaStrength: 0,
+    includeServiceMention: false,
+    engagementQuestion: 'optional',
   },
 
-  trend: {
-    label: '効率化・時短型',
+  // ===== 価値提供: 20% =====
+  algorithm_insight: {
+    label: 'アルゴリズム解説・分析',
+    category: 'value',
     postType: 'educational',
-    instruction: `フォロワーを自力で増やすための膨大な時間（数ヶ月〜年単位）を指摘。
-「フォロワー購入」なら数千円で一瞬。時給換算で圧倒的にコスパが良い。
-空いた時間で中身を磨けという提案。`,
-    exampleStructure: `[自力でフォロワーを増やす地獄] → [「フォロワーを買う」という時短術] → [浮いた時間でコンテンツに集中]`,
-    includeServiceMention: true,
+    weight: 20,
+    instruction: `X / Threads / Instagram / TikTok などのアルゴリズムや表示ロジックについて語る。
+以下のいずれかのテーマを扱う：
+- アルゴリズムが評価する指標（滞在時間、保存率、返信率）
+- 反応が増える投稿構造（冒頭3行、質問で終わる、対比構成）
+- スパム判定されやすいパターン（同一文面の連投、ハッシュタグ乱用）
+- 返信・リプライの重要性
+- フォロワー数と初速の関係
+
+断定しすぎず「〜の傾向がある」「〜しやすい」という柔らかい表現を使う。
+サービスの宣伝は一切しない。純粋な分析・解説。`,
+    exampleStructure: `[最近のアルゴリズム傾向] → [具体的な仕組みの解説] → [運用への示唆]`,
+    ctaStrength: 0,
+    includeServiceMention: false,
+    engagementQuestion: 'optional',
   },
 
-  platform_tips: {
-    label: '権威性・バンドワゴン型',
-    postType: 'educational',
-    instruction: `人間はフォロワー数が多いアカウントを信用するという心理学（バンドワゴン効果）を語る。
-店の行列と同じ理屈。だからInstagramでもXでもTikTokでも、最初に見栄えの数字を揃えるのが正解。
-「フォロワー 増やす」手段として購入はアリだという結論。`,
-    exampleStructure: `[人は数字で判断するという真理] → [フォロワー数＝店前の行列] → [フォロワーを増やすならまずハクをつけろ]`,
-    includeServiceMention: true,
+  // ===== エンゲージメント: 20% =====
+  question_engage: {
+    label: '対話・質問型',
+    category: 'engage',
+    postType: 'engagement',
+    weight: 20,
+    instruction: `フォロワーや読者に経験・意見を聞く対話型の投稿。
+以下のような問いかけを中心に構成する：
+- SNS運用で一番苦労したことは？
+- XとThreads、どちらが伸ばしやすいと感じる？
+- 投稿を継続するコツを教えてほしい
+- フォロワーが増え始めたきっかけは何だった？
+- 最近試して効果があった運用方法は？
+
+必ず文末に返信したくなる質問を入れること。
+二択形式や体験ベースの問いかけが特に効果的。
+宣伝は一切しない。対話を生み出すことだけに集中。`,
+    exampleStructure: `[共感できる状況設定] → [自分の経験や考え] → [読者への質問]`,
+    ctaStrength: 0,
+    includeServiceMention: false,
+    engagementQuestion: 'required',
   },
 
-  pain_point: {
-    label: 'リスク排除・安全性型',
-    postType: 'problem_awareness',
-    instruction: `「フォロワーを買うと凍結される」という不安に先回りして答える。
-粗悪なBotと正規プロモーションの違いを説明。
-「フォロワー 安全」「フォロワー 凍結されない」方法があることを伝える。`,
-    exampleStructure: `[フォロワー購入の不安（凍結怖い）] → [Botと安全なプロモーションの違い] → [安全にフォロワーを増やす方法がある]`,
-    includeServiceMention: true,
-  },
-
-  benefit: {
-    label: '保証・安心感型',
+  // ===== 柔らか宣伝: 20% =====
+  soft_promo: {
+    label: '初速設計・柔らか訴求',
+    category: 'promo',
     postType: 'soft_promo',
-    instruction: `「買ってもすぐ減るんでしょ？」という疑念を潰す。
-30日間の減少保証つき、パスワード不要。
-「フォロワー 減少保証」で安心してフォロワーを増やせることを伝える。`,
-    exampleStructure: `[フォロワー購入の「すぐ減る」問題] → [30日保証＋パスワード不要の安心設計] → [これならリスクなくフォロワーを増やせる]`,
+    weight: 20,
+    instruction: `SNS運用における「初速」や「土台づくり」の重要性を語りながら、
+自然にフォロワー購入サービスの存在を示唆する。
+
+先に価値ある情報を提供してから、最後に軽くサービスに触れる構造。
+例：「初速がないと良い投稿も埋もれる」→「だから最初の数字を整えるのは戦略としてアリ」→「リプ欄にリンク」
+
+直接的に「買いましょう」とは言わない。
+「こういう選択肢もある」「賢い人はこうしてる」程度のトーン。`,
+    exampleStructure: `[初速・土台の重要性] → [自力だけでは時間がかかる現実] → [フォロワー購入という選択肢の提示] → [リプ欄にリンク案内]`,
+    ctaStrength: 2,
     includeServiceMention: true,
+    engagementQuestion: 'optional',
   },
 
-  case_study: {
-    label: 'コスパ・収益化型',
-    postType: 'soft_promo',
-    instruction: `飲み代1回分でSNSのハクが買えるコスパの良さをアピール。
-YouTube収益化の条件（登録者1000人）を達成したい層には特に刺さる。
-「YouTube 収益化」「YouTube 登録者」を絡めつつ、フォロワー購入の安さを強調。`,
-    exampleStructure: `[たった数千円でフォロワーが買える事実] → [YouTube収益化条件をクリアする近道] → [コスパの圧倒的な良さ]`,
-    includeServiceMention: true,
-  },
-
-  comparison: {
-    label: '自力vs課金 比較型',
-    postType: 'soft_promo',
-    instruction: `「毎日3時間SNS運用して月90時間消費」vs「数千円でフォロワーを買って1日で土台完成」を露骨に比較。
-賢い人は裏でフォロワーを買って初速を作っているという事実。
-「フォロワー 増やし方」は自力だけじゃないと主張。`,
-    exampleStructure: `[泥臭い自力運用の時間コスト] → [フォロワーを買うという賢い選択肢] → [時間をお金で買える人が勝つ]`,
-    includeServiceMention: true,
-  },
-
+  // ===== 直球宣伝: 10% =====
   direct_cta: {
-    label: '直球ダイレクト・セールス型',
+    label: 'ダイレクト・セールス',
+    category: 'promo',
     postType: 'direct_cta',
-    instruction: `ストレートに「フォロワー購入」をすすめる。
-Bot不使用、30日保証、パスワード不要、即日開始の強みを端的に。
-Instagram、X、TikTok、YouTube全対応であることも伝える。`,
-    exampleStructure: `[フォロワーを買おう、という直球提案] → [安全・安い・保証つきの3拍子] → [リプ欄にリンクあり]`,
+    weight: 10,
+    instruction: `フォロワー購入サービスをストレートに訴求する。
+ただし押し売り感は出さない。
+
+伝えるポイント：
+- 安全性（Bot不使用、段階的増加、凍結リスク最小）
+- コスパ（数千円から始められる）
+- 保証（30日間減少保証、パスワード不要）
+- 対応範囲（Instagram, X, TikTok, YouTube）
+
+毎回同じ文面にならないよう、切り口を変えること。`,
+    exampleStructure: `[フォロワー購入の提案] → [安全・安い・保証の強み] → [リプ欄にリンク案内]`,
+    ctaStrength: 3,
     includeServiceMention: true,
+    engagementQuestion: 'none',
   },
 };
 
@@ -121,24 +136,35 @@ Instagram、X、TikTok、YouTube全対応であることも伝える。`,
 export const PLATFORM_CONSTRAINTS: Record<Platform, {
   maxLength: number;
   toneGuidance: string;
+  hashtagGuidance: string;
 }> = {
   x: {
     maxLength: 200,
-    toneGuidance: `【X（Twitter）特化のトーン指示】
-- 短文でパンチを効かせる。長文は不要。
-- 「フォロワー購入」「フォロワー 増やす」「フォロワー 買う」等のSEOキーワードを自然に含める。
-- 丁寧すぎず堅すぎない「カジュアルな です/ます」口調を基本とする。
-- 命令口調は禁止（「〜しろ」「〜やれ」はNG）。「〜ですよ」「〜なんですよね」のような親しみのあるトーンで。
-- リンクは本文に入れない（リプ欄に別途貼るため）。`,
+    toneGuidance: `【X特化のトーン】
+- 短文でパンチを効かせる
+- 「カジュアルな です/ます」口調。友達に教える感じ
+- 命令形は禁止。「〜するのがいいですよ」「〜した方が早いです」
+- 改行を多めに使い、視認性を上げる`,
+    hashtagGuidance: `【Xのハッシュタグルール】
+- ハッシュタグは0〜1個（多くても2個まで）
+- 投稿内容に自然に合う場合のみ付ける
+- 毎回付ける必要はない
+- 候補: #SNS運用, #マーケティング, #インスタ運用, #X運用
+- 宣伝色の強い投稿（direct_cta）ではハッシュタグを付けない`,
   },
   threads: {
     maxLength: 300,
-    toneGuidance: `【Threads特化のトーン指示】
-- ぶっちゃけた本音ベースだが、口調は「カジュアルな です/ます」。
-- 命令口調は禁止。「〜だと思います」「〜なんですよね」のような柔らかくて親しみある話し方。
-- 「フォロワー購入」「フォロワー 増やす」等のSEOキーワードを自然に含める。
-- 短めでテンポよく改行。
-- リンクは本文に入れない（リプ欄に別途貼るため）。`,
+    toneGuidance: `【Threads特化のトーン】
+- 会話的で柔らかいトーン。ぶっちゃけた本音ベース
+- 「カジュアルな です/ます」口調。親しみある話し方
+- 共感・問いかけを入れやすく
+- 改行を多めに使い、テンポよく
+- 人間が話している感を強める`,
+    hashtagGuidance: `【Threadsのハッシュタグルール】
+- 関連性の高いトピックタグを0〜2個
+- 毎回付ける必要はない。投稿テーマと整合するものだけ
+- 候補: #SNS運用, #フォロワー増やす, #インスタ運用, #Threads運用, #TikTok攻略
+- 不自然な羅列はNG。付けないほうがマシ`,
   },
 };
 
@@ -166,52 +192,129 @@ export const MODE_GUIDANCE: Record<XPostMode, {
   },
 };
 
-// ===== PostType 理想分布 =====
+// ===== エンゲージメント質問候補 =====
 
-const POST_TYPE_IDEAL_RATIO: Record<PostType, number> = {
-  educational: 0.2,
-  problem_awareness: 0.2,
-  soft_promo: 0.4,
-  direct_cta: 0.2,
-};
+const ENGAGEMENT_QUESTIONS = [
+  'みなさんはどう思いますか？',
+  'これ試したことありますか？',
+  '同じ経験ある人いますか？',
+  '一番効果があった方法を教えてください！',
+  'みなさんはどのやり方が反応ありましたか？',
+  '最初の運用で一番難しかったのは何ですか？',
+  'XとThreads、どちらが伸ばしやすいですか？',
+  '投稿を続ける上で一番の悩みは何ですか？',
+  '逆にこれはやめた方がいいってことありますか？',
+  'みなさんの運用歴、どれくらいですか？',
+  '最近試して良かった方法ってありますか？',
+  '他にもコツがあれば教えてください！',
+];
+
+function pickEngagementQuestion(): string {
+  return ENGAGEMENT_QUESTIONS[Math.floor(Math.random() * ENGAGEMENT_QUESTIONS.length)];
+}
+
+// ===== 重み付き角度選択 =====
 
 /**
- * 過去履歴に基づく角度選択
+ * 重み付きランダム選択 + 連続類似投稿の抑制
  */
 export function selectAngle(recentAngles: AngleType[]): AngleType {
   const allAngles: AngleType[] = [
-    'educational', 'trend', 'platform_tips',
-    'pain_point', 'benefit', 'case_study',
-    'comparison', 'direct_cta',
+    'tips_practical', 'algorithm_insight', 'question_engage',
+    'soft_promo', 'direct_cta',
   ];
 
-  if (recentAngles.length === 0) {
-    return 'direct_cta';
+  // 連続投稿の抑制: 直近3件で使ったカテゴリの角度は重みを半減
+  const recentCategories = recentAngles.slice(0, 3).map(a => ANGLE_TEMPLATES[a]?.category);
+  // direct_cta が直近2件にあれば除外
+  const recentHasDirectCta = recentAngles.slice(0, 2).includes('direct_cta');
+
+  // 重み付き選択
+  const weighted: Array<{ angle: AngleType; weight: number }> = allAngles.map(angle => {
+    const template = ANGLE_TEMPLATES[angle];
+    let weight = template.weight;
+
+    // 直近で同じ角度を使っていたら重みを大幅に下げる
+    if (recentAngles.slice(0, 3).includes(angle)) {
+      weight *= 0.1;
+    }
+    // 直近で同じカテゴリが多い場合は重みを下げる
+    const categoryCount = recentCategories.filter(c => c === template.category).length;
+    if (categoryCount >= 2) {
+      weight *= 0.3;
+    }
+    // direct_cta は連続させない
+    if (angle === 'direct_cta' && recentHasDirectCta) {
+      weight *= 0.05;
+    }
+
+    return { angle, weight };
+  });
+
+  // 重み付きランダム選択
+  const totalWeight = weighted.reduce((sum, w) => sum + w.weight, 0);
+  let random = Math.random() * totalWeight;
+
+  for (const { angle, weight } of weighted) {
+    random -= weight;
+    if (random <= 0) return angle;
   }
 
-  const counts = new Map<AngleType, number>();
-  for (const angle of allAngles) {
-    counts.set(angle, 0);
-  }
-  for (const angle of recentAngles) {
-    counts.set(angle, (counts.get(angle) || 0) + 1);
-  }
-
-  const sorted = [...allAngles].sort((a, b) => (counts.get(a) || 0) - (counts.get(b) || 0));
-  return sorted[0];
+  return weighted[weighted.length - 1].angle;
 }
 
+// ===== ハッシュタグ候補 =====
+
+const HASHTAG_CANDIDATES: Record<Platform, string[]> = {
+  x: ['#SNS運用', '#マーケティング', '#インスタ運用', '#X運用', '#フォロワー'],
+  threads: ['#SNS運用', '#フォロワー増やす', '#インスタ運用', '#Threads運用', '#TikTok攻略', '#SNSマーケティング'],
+};
+
 /**
- * SEOキーワードをランダムに3つ選んでプロンプトに含める
+ * プラットフォームと角度に応じてハッシュタグを選択
  */
-function pickSeoKeywords(count: number = 3): string[] {
+export function selectHashtags(platform: Platform, angle: AngleType): string[] {
+  const template = ANGLE_TEMPLATES[angle];
+
+  // direct_cta では基本ハッシュタグなし
+  if (angle === 'direct_cta') return [];
+
+  const candidates = HASHTAG_CANDIDATES[platform];
+
+  if (platform === 'x') {
+    // X: 50%の確率で0個、50%で1個
+    if (Math.random() < 0.5) return [];
+    return [candidates[Math.floor(Math.random() * candidates.length)]];
+  }
+
+  // Threads: 60%の確率で1個、30%で2個、10%で0個
+  const roll = Math.random();
+  if (roll < 0.1) return [];
+  if (roll < 0.7) {
+    return [candidates[Math.floor(Math.random() * candidates.length)]];
+  }
+  // 2個（重複なし）
+  const shuffled = [...candidates].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, 2);
+}
+
+// ===== SEOキーワード（soft_promo / direct_cta のみ使用） =====
+
+const SEO_KEYWORDS = [
+  'フォロワー購入', 'フォロワー 増やす', 'フォロワー 買う',
+  'インスタ フォロワー', 'X フォロワー',
+  'TikTok フォロワー', 'YouTube 登録者', 'YouTube 収益化',
+  'いいね 増やす', 'SNS 集客', 'SNS 初速',
+  'フォロワー 安全', 'フォロワー 凍結されない',
+];
+
+function pickSeoKeywords(count: number = 2): string[] {
   const shuffled = [...SEO_KEYWORDS].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, count);
 }
 
-/**
- * 投稿生成プロンプト構築
- */
+// ===== プロンプト構築 =====
+
 export function buildGenerationPrompt(options: {
   platform: Platform;
   angle: AngleType;
@@ -231,60 +334,103 @@ export function buildGenerationPrompt(options: {
   const charInstruction = modeGuide
     ? `【文章量ガイド】\n投稿モード: ${modeGuide.label}\n文字数目安: ${modeGuide.charGuidance}`
     : `【文章量ガイド】\n目安文字数: 100〜300文字（短く鋭く）`;
-  const formatInstruction = modeGuide
-    ? modeGuide.formatGuidance
-    : '';
+  const formatInstruction = modeGuide ? modeGuide.formatGuidance : '';
 
-  // SEOキーワードの指示
-  const seoKeywords = pickSeoKeywords(3);
-  const seoInstruction = `## 📌 SEOキーワード指示（重要）
-以下のキーワードのうち1〜2個を、文中に自然な形で含めること。
-不自然にならない範囲で、検索されやすいワードを投稿文に練り込む。
-- ${seoKeywords.join('\n- ')}
+  // エンゲージメント質問の指示
+  let engagementInstruction = '';
+  if (template.engagementQuestion === 'required') {
+    const q = pickEngagementQuestion();
+    engagementInstruction = `## 🗣 エンゲージメント質問（必須）
+投稿の末尾に、読者が返信したくなる質問を入れること。
+参考例: 「${q}」
+ただし毎回同じ質問にならないよう、自分で考えた質問でもOK。`;
+  } else if (template.engagementQuestion === 'optional') {
+    engagementInstruction = `## 🗣 エンゲージメント質問（任意）
+可能であれば投稿の末尾に、読者に問いかける一文を入れる。
+ただし無理に付けなくてもよい。付ける場合は自然な形で。`;
+  }
 
-【全キーワードリスト（参考）】
-フォロワー購入 / フォロワー 増やす / フォロワー 買う / インスタ フォロワー / X フォロワー / TikTok フォロワー / YouTube 登録者 / YouTube 収益化 / いいね 増やす / 再生回数 増やす / フォロワー 安い / フォロワー 安全 / フォロワー 凍結されない`;
+  // SEOキーワード指示（宣伝系のみ）
+  let seoInstruction = '';
+  if (template.category === 'promo') {
+    const keywords = pickSeoKeywords(2);
+    seoInstruction = `## 📌 SEOキーワード（宣伝投稿のみ）
+以下のキーワードのうち1〜2個を文中に自然に含める：
+- ${keywords.join('\n- ')}`;
+  }
 
-  return `あなたはSNS運用における「綺麗事」を嫌い、効率重視でスマートな裏技や投資（フォロワー購入など）を肯定する、リアリストな凄腕SNSマーケターです。
-「良い発信をすれば伸びる」という幻想を覆し、「まず見栄（数字）を揃えて初速を作るのが賢い」「時間はお金で買える」というスタンスで発信してください。
+  // CTA指示
+  let ctaInstruction = '';
+  if (template.ctaStrength === 0) {
+    ctaInstruction = `## CTA
+この投稿にCTAは不要。純粋な価値提供 or 対話に集中すること。
+リプ欄へのリンク案内も不要。`;
+  } else if (template.ctaStrength <= 2) {
+    ctaInstruction = `## CTA（控えめ）
+投稿の最後に軽く「リプ欄にリンクあり」程度の案内を入れてもよい。
+ただしメインは価値提供。押し売り感を出さないこと。`;
+  } else {
+    ctaInstruction = `## CTA（あり）
+本文の最後に「リプ欄にリンク置いた」「リプ欄にURL貼ってある」等の短い案内を入れる。
+ただし本文中にURLは入れない。`;
+  }
 
-【口調の絶対ルール】
-- 「カジュアルな です/ます」口調を使うこと。堅すぎず、友達に教えるような親しみのあるトーン。
-- 命令形（「〜しろ」「〜やれ」「〜作れ」）は絶対禁止。代わりに「〜するのがいいですよ」「〜した方が早いです」のように書く。
-- ただし堅すぎるビジネス敬語（「〜でございます」「〜していただければ幸いです」）もNG。
-- イメージは「ちょっと先輩のSNSマーケターが後輩にカフェでアドバイスしてる感じ」。
+  // ハッシュタグ指示
+  const hashtagInstruction = constraints.hashtagGuidance;
 
-## 今回の投稿アングル: ${template.label}
+  // ペルソナの切り替え
+  const persona = template.category === 'promo'
+    ? `あなたはSNS運用の「裏側」を知り尽くしたマーケター。効率重視でスマートな戦略を語る。
+「良い発信をすれば伸びる」という綺麗事は否定し、「初速設計」や「時間をお金で買う」考え方を自然に語る。`
+    : `あなたは実践派のSNSマーケター。自分自身もSNSを運用しており、リアルな経験に基づいたアドバイスをする。
+押し売りは一切しない。フォロワーにとって有益な情報を共有することだけに集中する。普通のSNSユーザーとして自然に発信する。`;
+
+  return `${persona}
+
+【口調ルール】
+- 「カジュアルな です/ます」口調。友達に教える感じ
+- 命令形は絶対禁止（「〜しろ」「〜やれ」→「〜ですよ」「〜した方がいいです」）
+- 堅すぎるビジネス敬語もNG
+- 新規アカウントでも違和感のない、普通の運用アカウントっぽいトーン
+- 同じ構文の繰り返しを避けて、自然な文体にする
+
+## 今回の投稿カテゴリ: ${template.label}
 ${template.instruction}
 
 ## 構造イメージ
 ${template.exampleStructure}
 
-## プラットフォーム特化の制約（${platform === 'x' ? 'X' : 'Threads'}）
+## プラットフォーム（${platform === 'x' ? 'X' : 'Threads'}）
 ${charInstruction}
 ${formatInstruction}
 
 ${constraints.toneGuidance}
 
+${hashtagInstruction}
+
 ${seoInstruction}
 
-## 参照情報（ネタ引き出し・サービス情報用）
+${engagementInstruction}
+
+${ctaInstruction}
+
+## 参照情報
 ${referenceSummary}
 
-## CTA（導線）の指示
-リンクは投稿本文に入れないこと。リプ欄に別途「購入はこちら」とリンクを貼るため、本文中のCTAは不要。
-本文の最後は「リプ欄にリンク置いた」「リプ欄にURL貼ってある」「↓にリンクあり」等の短い案内を入れるだけでOK。
+## 🛑 禁止事項
+- 禁止ワード: ${bannedPhrases.join('、')}, 爆増, バズる, 絶対に, 100%, 今すぐ, おすすめです
+- AI構文禁止: 「〜であることが重要です」「〜を検討してみてはいかがでしょうか」
+- 命令口調禁止
+- コピペ感を出さない。毎回異なる切り口・構成にする
+- ハッシュタグ乱用禁止（ルールに従う）
+- URLは本文に入れない
+- 絵文字の過剰使用禁止
+- 挨拶禁止（「こんにちは」など）
 
-## 🛑 【絶対禁止事項】
-- 以下のワードは使用禁止: ${bannedPhrases.join('、')}, 爆増, バズる, 絶対に, 100%, 今すぐ, おすすめです
-- AI構文の禁止: 「〜であることが重要です」「〜を検討してみてはいかがでしょうか」等の優等生的な表現
-- 命令口調の禁止:「〜しろ」「〜やれ」「〜作れ」等は一切使わない。「〜ですよ」「〜した方がいいです」に言い換える。
-- お節介・説教トーンの禁止: あくまで「自分はこうしてます」「賢い人はこうやってますよ」という柔らかい客観ベース
-- 挨拶の禁止、ハッシュタグ禁止、URLの直書き禁止、絵文字の過剰使用禁止
-
-## 出力形式（JSONのみ出力）
+## 出力形式（JSONのみ）
 {
   "hook": "投稿の冒頭1行（短いパンチライン）",
-  "generated_text": "投稿文の全文。ハッシュタグ・URLなし。短く鋭く、SEOキーワードを含む。"
+  "generated_text": "投稿文の全文",
+  "hashtags": ["ハッシュタグ（ルールに従って0〜2個）"]
 }`;
 }

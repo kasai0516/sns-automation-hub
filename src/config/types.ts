@@ -51,16 +51,16 @@ export interface PostingSchedule {
 export type XPostMode = 'single' | 'thread' | 'longform_experimental';
 
 export type AngleType =
-  | 'pain_point'        // 悩み訴求型
-  | 'comparison'        // 比較・解説型
-  | 'benefit'           // ベネフィット訴求型
-  | 'educational'       // 教育コンテンツ型
-  | 'trend'             // トレンド・ニュース型
-  | 'platform_tips'     // プラットフォーム別Tips型
-  | 'case_study'        // 実績 / 事例訴求型
-  | 'direct_cta';       // CTA直球型
+  | 'tips_practical'       // 価値提供: 実用的SNS運用テクニック
+  | 'algorithm_insight'    // 価値提供: アルゴリズム解説
+  | 'question_engage'      // エンゲージメント: 質問・対話
+  | 'soft_promo'           // 柔らか宣伝: 初速設計→サービス接続
+  | 'direct_cta';          // 直球宣伝: サービス訴求
 
-export type PostType = 'educational' | 'problem_awareness' | 'soft_promo' | 'direct_cta';
+/** Content category for impression optimization */
+export type ContentCategory = 'value' | 'engage' | 'promo';
+
+export type PostType = 'educational' | 'engagement' | 'soft_promo' | 'direct_cta';
 
 export interface GeneratedPost {
   platform: Platform;

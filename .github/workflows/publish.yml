@@ -2,10 +2,16 @@ name: SNS Auto Post (Publish)
 
 on:
   schedule:
-    # GlobeSNS × X: 毎時37分に投稿
-    - cron: '37 * * * *'
-    # GlobeSNS × Threads: 毎時47分に投稿
-    - cron: '47 * * * *'
+    # ===== GlobeSNS × X: 1日3回 (JST: 07:00, 12:00, 20:00) =====
+    - cron: '0 22 * * *'   # JST 07:00 = UTC 22:00 (前日)
+    - cron: '0 3 * * *'    # JST 12:00 = UTC 03:00
+    - cron: '0 11 * * *'   # JST 20:00 = UTC 11:00
+
+    # ===== GlobeSNS × Threads: 1日3回 (JST: 08:00, 13:00, 21:00) =====
+    - cron: '0 23 * * *'   # JST 08:00 = UTC 23:00 (前日)
+    - cron: '0 4 * * *'    # JST 13:00 = UTC 04:00
+    - cron: '0 12 * * *'   # JST 21:00 = UTC 12:00
+
   workflow_dispatch:
     inputs:
       account:
@@ -52,9 +58,12 @@ jobs:
         id: account
         run: |
           if [ "${{ github.event_name }}" == "schedule" ]; then
-            if [ "${{ github.event.schedule }}" == "37 * * * *" ]; then
+            CRON="${{ github.event.schedule }}"
+            # X schedules: 22:00, 03:00, 11:00 UTC
+            if [ "$CRON" == "0 22 * * *" ] || [ "$CRON" == "0 3 * * *" ] || [ "$CRON" == "0 11 * * *" ]; then
               echo "id=globesns-x" >> $GITHUB_OUTPUT
-            elif [ "${{ github.event.schedule }}" == "47 * * * *" ]; then
+            # Threads schedules: 23:00, 04:00, 12:00 UTC
+            elif [ "$CRON" == "0 23 * * *" ] || [ "$CRON" == "0 4 * * *" ] || [ "$CRON" == "0 12 * * *" ]; then
               echo "id=globesns-threads" >> $GITHUB_OUTPUT
             else
               echo "id=globesns-x" >> $GITHUB_OUTPUT

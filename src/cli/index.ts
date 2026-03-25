@@ -72,22 +72,23 @@ program
           }
 
           if (mode === 'dry-run') {
-            // Display dry-run result
+            // Display dry-run result with category info
+            const angleTemplate = (await import('../generator/prompts.js')).ANGLE_TEMPLATES[post.angle];
             logger.dryRunBox({
               account_profile_id: post.account_profile_id,
               service_name: post.service_name,
               platform: post.platform,
-              angle: post.angle,
+              category: `${angleTemplate?.category || 'unknown'} (${post.angle})`,
               post_type: post.post_type,
+              cta_strength: angleTemplate?.ctaStrength ?? 'N/A',
               hook: post.hook,
-              hashtags: post.hashtags,
+              hashtags: post.hashtags.length > 0 ? post.hashtags.join(', ') : '(none)',
+              hashtag_count: post.hashtags.length,
               generated_text: post.generated_text,
-              original_url: post.original_url,
-              utm_url: post.utm_url,
-              reference_summary: post.reference_summary.slice(0, 300) + '...',
+              char_count: post.generated_text.length,
               dedupe_score: dedupeResult.score,
               dedupe_duplicate: dedupeResult.isDuplicate,
-              char_count: post.generated_text.length,
+              should_reply_with_link: post.should_reply_with_link,
               image: imagePath || 'none',
             });
             successCount++;

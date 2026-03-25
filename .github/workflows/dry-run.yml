@@ -2,18 +2,20 @@ name: SNS Auto Post (Dry-Run)
 
 on:
   schedule:
-    # ai-seo-x: 毎時07分
-    - cron: '7 * * * *'
-    # ai-seo-threads: 毎時17分
-    - cron: '17 * * * *'
-    # globesns-x: 毎時37分
-    - cron: '37 * * * *'
-    # globesns-threads: 毎時47分
-    - cron: '47 * * * *'
+    # ===== Dry-run: X と Threads の Publish と同じ時刻に実行 =====
+    # GlobeSNS × X: JST 07:00, 12:00, 20:00
+    - cron: '0 22 * * *'   # JST 07:00 = UTC 22:00
+    - cron: '0 3 * * *'    # JST 12:00 = UTC 03:00
+    - cron: '0 11 * * *'   # JST 20:00 = UTC 11:00
+    # GlobeSNS × Threads: JST 08:00, 13:00, 21:00
+    - cron: '0 23 * * *'   # JST 08:00 = UTC 23:00
+    - cron: '0 4 * * *'    # JST 13:00 = UTC 04:00
+    - cron: '0 12 * * *'   # JST 21:00 = UTC 12:00
+
   workflow_dispatch:
     inputs:
       account:
-        description: 'Account profile ID (e.g. ai-seo-x)'
+        description: 'Account profile ID (e.g. globesns-x, globesns-threads)'
         required: false
         default: ''
 
@@ -41,14 +43,16 @@ jobs:
           if [ -n "${{ github.event.inputs.account }}" ]; then
             echo "id=${{ github.event.inputs.account }}" >> $GITHUB_OUTPUT
           else
-            MINUTE=$(date -u +%M)
-            case $MINUTE in
-              07) echo "id=ai-seo-x" >> $GITHUB_OUTPUT ;;
-              17) echo "id=ai-seo-threads" >> $GITHUB_OUTPUT ;;
-              37) echo "id=globesns-x" >> $GITHUB_OUTPUT ;;
-              47) echo "id=globesns-threads" >> $GITHUB_OUTPUT ;;
-              *)  echo "id=ai-seo-x" >> $GITHUB_OUTPUT ;;
-            esac
+            CRON="${{ github.event.schedule }}"
+            # X schedules: 22:00, 03:00, 11:00 UTC
+            if [ "$CRON" == "0 22 * * *" ] || [ "$CRON" == "0 3 * * *" ] || [ "$CRON" == "0 11 * * *" ]; then
+              echo "id=globesns-x" >> $GITHUB_OUTPUT
+            # Threads schedules: 23:00, 04:00, 12:00 UTC
+            elif [ "$CRON" == "0 23 * * *" ] || [ "$CRON" == "0 4 * * *" ] || [ "$CRON" == "0 12 * * *" ]; then
+              echo "id=globesns-threads" >> $GITHUB_OUTPUT
+            else
+              echo "id=globesns-x" >> $GITHUB_OUTPUT
+            fi
           fi
 
       - name: Run dry-run

@@ -6,6 +6,7 @@ import { logger } from '../utils/logger.js';
 interface LlmResponse {
   hook: string;
   generated_text: string;
+  hashtags?: string[];
 }
 
 /**
@@ -134,6 +135,7 @@ function parseResponse(raw: string): LlmResponse {
     return {
       hook: parsed.hook || parsed.generated_text.split('\n')[0] || '',
       generated_text: parsed.generated_text,
+      hashtags: Array.isArray(parsed.hashtags) ? parsed.hashtags.filter((h: any) => typeof h === 'string') : [],
     };
   } catch (error) {
     logger.error(`Failed to parse LLM response: ${raw}`);
