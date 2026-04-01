@@ -3,6 +3,7 @@ import type { SnsAdapter } from './base.js';
 import type { AccountProfile, GeneratedPost } from '../config/types.js';
 import { getCredential, validateAccountCredentials } from '../utils/env.js';
 import { logger } from '../utils/logger.js';
+import { refreshThreadsToken, checkThreadsTokenValidity } from '../utils/threads-token.js';
 
 /**
  * Threads API adapter
@@ -20,8 +21,28 @@ export class ThreadsAdapter implements SnsAdapter {
   async publish(post: GeneratedPost, account: AccountProfile, imagePath?: string): Promise<string> {
     this.validateCredentials(account);
 
-    const accessToken = getCredential(account, 'ACCESS_TOKEN');
+    let accessToken = getCredential(account, 'ACCESS_TOKEN');
     const userId = getCredential(account, 'USER_ID');
+
+    // Check token validity and attempt refresh if needed
+    const tokenCheck = await checkThreadsTokenValidity(accessToken, userId);
+    if (!tokenCheck.valid) {
+      logger.warn('Threads token appears invalid or expired. Attempting refresh...');
+      try {
+        accessToken = await refreshThreadsToken(accessToken);
+        // Update the env var for this process so subsequent calls use the refreshed token
+        const envKey = `${account.credential_env_prefix}_ACCESS_TOKEN`;
+        process.env[envKey] = accessToken;
+        logger.success('Token refreshed successfully for this session.');
+        logger.warn('⚠️ Remember to update GLOBESNS_THREADS_ACCESS_TOKEN in GitHub Secrets with the new token.');
+      } catch (refreshError) {
+        logger.error(`Token refresh failed: ${refreshError instanceof Error ? refreshError.message : String(refreshError)}`);
+        throw new Error(
+          'Threads access token has expired and could not be refreshed. ' +
+          'Please generate a new token in the Meta Developer Portal and update GitHub Secrets.'
+        );
+      }
+    }
 
     logger.info(`Publishing to Threads via ${account.account_name}...`);
 

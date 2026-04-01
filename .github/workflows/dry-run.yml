@@ -2,15 +2,12 @@ name: SNS Auto Post (Dry-Run)
 
 on:
   schedule:
-    # ===== Dry-run: X と Threads の Publish と同じ時刻に実行 =====
-    # GlobeSNS × X: JST 07:00, 12:00, 20:00
-    - cron: '0 22 * * *'   # JST 07:00 = UTC 22:00
+    # ===== Dry-run: Publish と同じスケジュール =====
+    # GlobeSNS × X: JST 12:00
     - cron: '0 3 * * *'    # JST 12:00 = UTC 03:00
-    - cron: '0 11 * * *'   # JST 20:00 = UTC 11:00
-    # GlobeSNS × Threads: JST 08:00, 13:00, 21:00
+    # GlobeSNS × Threads: JST 08:00, 20:00
     - cron: '0 23 * * *'   # JST 08:00 = UTC 23:00
-    - cron: '0 4 * * *'    # JST 13:00 = UTC 04:00
-    - cron: '0 12 * * *'   # JST 21:00 = UTC 12:00
+    - cron: '0 11 * * *'   # JST 20:00 = UTC 11:00
 
   workflow_dispatch:
     inputs:
@@ -44,11 +41,11 @@ jobs:
             echo "id=${{ github.event.inputs.account }}" >> $GITHUB_OUTPUT
           else
             CRON="${{ github.event.schedule }}"
-            # X schedules: 22:00, 03:00, 11:00 UTC
-            if [ "$CRON" == "0 22 * * *" ] || [ "$CRON" == "0 3 * * *" ] || [ "$CRON" == "0 11 * * *" ]; then
+            # X schedule: 03:00 UTC
+            if [ "$CRON" == "0 3 * * *" ]; then
               echo "id=globesns-x" >> $GITHUB_OUTPUT
-            # Threads schedules: 23:00, 04:00, 12:00 UTC
-            elif [ "$CRON" == "0 23 * * *" ] || [ "$CRON" == "0 4 * * *" ] || [ "$CRON" == "0 12 * * *" ]; then
+            # Threads schedules: 23:00, 11:00 UTC
+            elif [ "$CRON" == "0 23 * * *" ] || [ "$CRON" == "0 11 * * *" ]; then
               echo "id=globesns-threads" >> $GITHUB_OUTPUT
             else
               echo "id=globesns-x" >> $GITHUB_OUTPUT

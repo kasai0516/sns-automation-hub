@@ -5,3 +5,8 @@ data/images/
 logs/
 *.log
 .DS_Store
+*_result*.txt
+*_debug*.txt
+*_debug*.json
+test-*.ts
+git_log_temp.txt

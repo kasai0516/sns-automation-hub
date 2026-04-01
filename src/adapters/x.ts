@@ -199,7 +199,16 @@ export class XAdapter implements SnsAdapter {
     }
 
     if (error && typeof error === 'object' && 'code' in error) {
-      const apiError = error as { code: number; message?: string };
+      const apiError = error as { code: number; message?: string; data?: any; rateLimit?: any };
+      if (apiError.code === 402) {
+        const resetTime = apiError.rateLimit?.reset
+          ? new Date(apiError.rateLimit.reset * 1000).toISOString()
+          : 'unknown';
+        throw new Error(
+          `X API credits depleted (Free Tier monthly limit reached). Credits reset at: ${resetTime}. ` +
+          `Consider upgrading to Basic tier or reducing post frequency.`
+        );
+      }
       if (apiError.code === 429) {
         throw new Error(`X API rate limit reached. Please wait before retrying.`);
       }
