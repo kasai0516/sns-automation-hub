@@ -61,6 +61,27 @@ export class XAdapter implements SnsAdapter {
 
       return lastTweetId;
     } catch (error: unknown) {
+      // Retry once on 403 — strip hashtags from text and try again
+      const is403 = error && typeof error === 'object' && 'code' in error && (error as any).code === 403;
+      if (is403) {
+        logger.warn('X API 403 Forbidden. Retrying with cleaned text in 3s...');
+        await new Promise(resolve => setTimeout(resolve, 3000));
+
+        try {
+          // Remove hashtags from text for retry
+          const cleanedText = post.generated_text.replace(/#\S+/g, '').replace(/\s{2,}/g, ' ').trim();
+          const retryId = await this.publishSingle(client, cleanedText);
+          logger.success(`Retry succeeded (hashtags removed): ${retryId}`);
+          return retryId;
+        } catch (retryError) {
+          logger.error('Retry also failed.');
+          this.handlePublishError(retryError, post);
+          throw new Error(
+            `X API error (retry failed): ${retryError instanceof Error ? retryError.message : String(retryError)}`
+          );
+        }
+      }
+
       this.handlePublishError(error, post);
       throw new Error(
         `X API error: ${error instanceof Error ? error.message : String(error)}`

@@ -2,13 +2,15 @@ name: SNS Auto Post (Publish)
 
 on:
   schedule:
-    # ===== GlobeSNS × X: 1日1回 (JST: 12:00) =====
-    # Free Tier クレジット節約のため1日1回に削減
-    - cron: '0 3 * * *'    # JST 12:00 = UTC 03:00
+    # ===== GlobeSNS × X: 1日3回 (JST: 08:00, 12:30, 20:00) =====
+    - cron: '0 23 * * *'     # JST 08:00 = UTC 23:00 (前日)
+    - cron: '30 3 * * *'     # JST 12:30 = UTC 03:30
+    - cron: '0 11 * * *'     # JST 20:00 = UTC 11:00
 
-    # ===== GlobeSNS × Threads: 1日2回 (JST: 08:00, 20:00) =====
-    - cron: '0 23 * * *'   # JST 08:00 = UTC 23:00 (前日)
-    - cron: '0 11 * * *'   # JST 20:00 = UTC 11:00
+    # ===== GlobeSNS × Threads: 1日3回 (JST: 08:30, 13:00, 20:30) =====
+    - cron: '30 23 * * *'    # JST 08:30 = UTC 23:30 (前日)
+    - cron: '0 4 * * *'      # JST 13:00 = UTC 04:00
+    - cron: '30 11 * * *'    # JST 20:30 = UTC 11:30
 
   workflow_dispatch:
     inputs:
@@ -22,6 +24,9 @@ on:
 
 permissions:
   contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   publish:
@@ -57,11 +62,11 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" == "schedule" ]; then
             CRON="${{ github.event.schedule }}"
-            # X schedule: 03:00 UTC
-            if [ "$CRON" == "0 3 * * *" ]; then
+            # X schedules: 23:00, 03:30, 11:00 UTC
+            if [ "$CRON" == "0 23 * * *" ] || [ "$CRON" == "30 3 * * *" ] || [ "$CRON" == "0 11 * * *" ]; then
               echo "id=globesns-x" >> $GITHUB_OUTPUT
-            # Threads schedules: 23:00, 11:00 UTC
-            elif [ "$CRON" == "0 23 * * *" ] || [ "$CRON" == "0 11 * * *" ]; then
+            # Threads schedules: 23:30, 04:00, 11:30 UTC
+            elif [ "$CRON" == "30 23 * * *" ] || [ "$CRON" == "0 4 * * *" ] || [ "$CRON" == "30 11 * * *" ]; then
               echo "id=globesns-threads" >> $GITHUB_OUTPUT
             else
               echo "id=globesns-x" >> $GITHUB_OUTPUT

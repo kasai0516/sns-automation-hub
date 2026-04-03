@@ -3,22 +3,26 @@ import { jaccardSimilarity, hookSimilarity, hashtagOverlap } from './similarity.
 import { readHistory, getHistoryByAccount } from '../storage/history.js';
 import { logger } from '../utils/logger.js';
 
-/** Similarity thresholds */
+/** Similarity thresholds — relaxed to prevent false positives */
 const THRESHOLDS = {
-  /** Full text similarity threshold */
-  TEXT_SIMILARITY: 0.6,
+  /** Full text similarity threshold (raised to allow more variation) */
+  TEXT_SIMILARITY: 0.65,
   /** Hook similarity threshold */
-  HOOK_SIMILARITY: 0.7,
+  HOOK_SIMILARITY: 0.75,
   /** Hashtag overlap threshold */
-  HASHTAG_OVERLAP: 0.8,
-  /** How many recent entries to check per account */
-  RECENT_COUNT: 50,
-  /** Cross-account text similarity (stricter for X policy) */
-  CROSS_ACCOUNT_TEXT: 0.5,
+  HASHTAG_OVERLAP: 0.9,
+  /** How many recent entries to check per account (reduced from 50) */
+  RECENT_COUNT: 15,
+  /** Cross-account text similarity */
+  CROSS_ACCOUNT_TEXT: 0.55,
+  /** URL+angle combo only blocked if within this many recent posts */
+  URL_ANGLE_LOOKBACK: 5,
 };
 
 /**
- * Check if a generated post is too similar to existing history
+ * Check if a generated post is too similar to existing history.
+ * Designed to be permissive — it's better to post something slightly similar
+ * than to post nothing at all.
  */
 export function checkDuplicate(post: GeneratedPost): DedupeResult {
   const allHistory = readHistory();
@@ -27,14 +31,15 @@ export function checkDuplicate(post: GeneratedPost): DedupeResult {
     return { isDuplicate: false, score: 0, reason: null, matchedHistoryId: null };
   }
 
-  // 1. Check same-account history
+  // 1. Check same-account history (recent only)
   const sameAccountHistory = allHistory
     .filter(h => h.account_profile_id === post.account_profile_id)
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
     .slice(0, THRESHOLDS.RECENT_COUNT);
 
-  for (const entry of sameAccountHistory) {
-    const result = compareWithEntry(post, entry, false);
+  for (let i = 0; i < sameAccountHistory.length; i++) {
+    const entry = sameAccountHistory[i];
+    const result = compareWithEntry(post, entry, false, i);
     if (result.isDuplicate) return result;
   }
 
@@ -45,7 +50,7 @@ export function checkDuplicate(post: GeneratedPost): DedupeResult {
     .slice(0, THRESHOLDS.RECENT_COUNT);
 
   for (const entry of crossAccountHistory) {
-    const result = compareWithEntry(post, entry, true);
+    const result = compareWithEntry(post, entry, true, 999);
     if (result.isDuplicate) return result;
   }
 
@@ -53,12 +58,14 @@ export function checkDuplicate(post: GeneratedPost): DedupeResult {
 }
 
 /**
- * Compare a generated post with a history entry
+ * Compare a generated post with a history entry.
+ * @param recencyIndex How recently this entry was posted (0 = most recent)
  */
 function compareWithEntry(
   post: GeneratedPost,
   entry: PostHistory,
-  isCrossAccount: boolean
+  isCrossAccount: boolean,
+  recencyIndex: number
 ): DedupeResult {
   const textThreshold = isCrossAccount
     ? THRESHOLDS.CROSS_ACCOUNT_TEXT
@@ -75,39 +82,35 @@ function compareWithEntry(
     };
   }
 
-  // Same URL + same angle (within same account)
-  if (!isCrossAccount && post.original_url === entry.original_url && post.angle === entry.angle) {
+  // Same URL + same angle — ONLY block if within the last N posts (not entire history)
+  if (
+    !isCrossAccount &&
+    recencyIndex < THRESHOLDS.URL_ANGLE_LOOKBACK &&
+    post.original_url === entry.original_url &&
+    post.angle === entry.angle
+  ) {
     return {
       isDuplicate: true,
-      score: 1,
-      reason: `同じURLと同じ訴求角度の組み合わせは重複です: ${post.original_url} × ${post.angle}`,
+      score: 0.9,
+      reason: `直近${THRESHOLDS.URL_ANGLE_LOOKBACK}件内で同じURL×角度の組み合わせ: ${post.angle}`,
       matchedHistoryId: entry.id,
     };
   }
 
-  // Hook similarity
-  const hookScore = hookSimilarity(post.hook, entry.hook);
-  if (hookScore >= THRESHOLDS.HOOK_SIMILARITY) {
-    return {
-      isDuplicate: true,
-      score: hookScore,
-      reason: `冒頭フックが類似しています (${(hookScore * 100).toFixed(1)}%)`,
-      matchedHistoryId: entry.id,
-    };
+  // Hook similarity — only check very recent posts
+  if (recencyIndex < 8) {
+    const hookScore = hookSimilarity(post.hook, entry.hook);
+    if (hookScore >= THRESHOLDS.HOOK_SIMILARITY) {
+      return {
+        isDuplicate: true,
+        score: hookScore,
+        reason: `冒頭フックが類似しています (${(hookScore * 100).toFixed(1)}%)`,
+        matchedHistoryId: entry.id,
+      };
+    }
   }
 
-  // Hashtag overlap
-  const tagScore = hashtagOverlap(post.hashtags, entry.hashtags);
-  if (tagScore >= THRESHOLDS.HASHTAG_OVERLAP && textScore > 0.3) {
-    return {
-      isDuplicate: true,
-      score: tagScore,
-      reason: `ハッシュタグの重複が多く、テキストも類似しています`,
-      matchedHistoryId: entry.id,
-    };
-  }
-
-  return { isDuplicate: false, score: Math.max(textScore, hookScore), reason: null, matchedHistoryId: null };
+  return { isDuplicate: false, score: textScore, reason: null, matchedHistoryId: null };
 }
 
 /**

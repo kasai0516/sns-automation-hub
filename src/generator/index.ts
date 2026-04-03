@@ -13,7 +13,7 @@ import { getLlmProvider } from '../utils/env.js';
 import { logger } from '../utils/logger.js';
 import { countXLength, splitThread, selectPostMode } from '../utils/x-text.js';
 
-const MAX_RETRY = 3;
+const MAX_RETRY = 5;
 
 interface GenerateResult {
   post: GeneratedPost;
@@ -146,29 +146,82 @@ export async function generatePost(
     logger.warn(`Duplicate detected: ${dedupeResult.reason}. Retrying...`);
   }
 
-  // If all retries exhausted, return last attempt with warning
-  logger.warn(`Max retries reached. Returning last generated post with duplicate warning.`);
+  // If all retries exhausted, return last generated post instead of failing
+  // It's better to post something slightly similar than to post nothing
+  logger.warn(`Max retries reached (${MAX_RETRY}). Posting anyway — slight similarity is OK.`);
+  logger.warn(`Last dedup reason: ${lastDedupeResult.reason}`);
 
-  throw new Error(
-    `重複回避に失敗しました（${MAX_RETRY}回試行）。最後の判定理由: ${lastDedupeResult.reason}`
-  );
+  // Re-generate one final time and force-return it
+  const finalPrompt = buildGenerationPrompt({
+    platform: account.platform,
+    angle,
+    serviceName: service.service_name,
+    referenceSummary,
+    bannedPhrases: service.banned_phrases,
+    ctaPatterns: service.cta_patterns,
+    targetUrl: utmUrl,
+    postMode: account.platform === 'x' ? 'thread' : undefined,
+  });
+
+  const finalResult = await callLlm(provider, finalPrompt);
+  const finalText = finalResult.generated_text;
+  const finalXLen = account.platform === 'x' ? countXLength(finalText) : finalText.length;
+  const finalPostMode: XPostMode = account.platform === 'x'
+    ? selectPostMode(finalXLen, account.enable_longform ?? false)
+    : 'single';
+  const finalThreadTexts = finalPostMode === 'thread'
+    ? splitThread(finalText, 280)
+    : undefined;
+  const finalHashtags = finalResult.hashtags && finalResult.hashtags.length > 0
+    ? finalResult.hashtags
+    : selectHashtags(account.platform, angle);
+
+  const finalPost: GeneratedPost = {
+    platform: account.platform,
+    service_name: service.service_name,
+    account_profile_id: account.account_profile_id,
+    original_url: targetRefUrl,
+    utm_url: utmUrl,
+    angle,
+    post_type: template.postType,
+    hook: finalResult.hook,
+    hashtags: finalHashtags,
+    generated_text: finalText,
+    reference_summary: referenceSummary.slice(0, 500),
+    should_reply_with_link: template.includeServiceMention,
+    post_mode: finalPostMode,
+    thread_texts: finalThreadTexts,
+  };
+
+  logger.success(`Fallback post generated (bypassing dedup). Will post anyway.`);
+  return { post: finalPost, dedupeResult: lastDedupeResult };
 }
 
 /**
- * Pick the best target URL from service reference URLs
+ * Pick a target URL from service reference URLs.
+ * Uses weighted random selection to spread across all URL types,
+ * reducing URL+angle collision in dedup.
  */
 function pickTargetUrl(service: ServiceProfile): string {
   const refs = service.reference_urls;
   if (refs.length === 0) return service.base_url;
 
-  // Prefer LP, then feature, then others — with some randomness
-  const priorities: Array<typeof refs[0]['type']> = ['lp', 'feature', 'article', 'faq', 'pricing', 'other'];
+  // Weight by type: LP=3, feature=3, article=2, faq=1, pricing=1, other=1
+  const typeWeights: Record<string, number> = {
+    lp: 3, feature: 3, article: 2, faq: 1, pricing: 1, other: 1,
+  };
 
-  for (const type of priorities) {
-    const matching = refs.filter(r => r.type === type);
-    if (matching.length > 0) {
-      return matching[Math.floor(Math.random() * matching.length)].url;
-    }
+  const weighted = refs.map(r => ({
+    url: r.url,
+    weight: typeWeights[r.type] || 1,
+  }));
+
+  const totalWeight = weighted.reduce((sum, w) => sum + w.weight, 0);
+  let random = Math.random() * totalWeight;
+
+  for (const item of weighted) {
+    random -= item.weight;
+    if (random <= 0) return item.url;
   }
 
   return refs[0].url;
