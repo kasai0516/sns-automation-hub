@@ -1803,5 +1803,26 @@
     "published_at": "2026-04-16T12:13:00.995Z",
     "created_at": "2026-04-16T12:13:00.995Z",
     "platform_post_id": "18044092886767730"
+  },
+  {
+    "id": "8467aef3-832d-4de2-b204-a513b3e406a9",
+    "platform": "threads",
+    "account_profile_id": "globesns-threads",
+    "service_name": "globesns",
+    "original_url": "https://sns.globezenith.net/instagram/",
+    "utm_url": "https://sns.globezenith.net/instagram/?utm_source=threads&utm_medium=social&utm_campaign=auto_bot&utm_content=globesns_soft_promo_globesns-threads",
+    "angle": "soft_promo",
+    "post_type": "soft_promo",
+    "hook": "初速がカギ！SNS運用のスタートダッシュを切ろう。",
+    "hashtags": [
+      "#SNS運用"
+    ],
+    "generated_text": "良い投稿をしても、初速がないと全く意味がないこと、わかりますよね？\n\n特に新しいアカウントの場合、土台が整っていないと、せっかくの内容が埋もれちゃうんです。\nだからこそ、初めの数字を整えるのは戦略としてアリだと思います。\n\n自力でやるのもいいけど、それには時間がかかるのが現実。賢い人は、こういった選択肢を使って効率よく進めていますよ。\n\nフォロワーを買うという手もありますね。最初にしっかりとした数字を持っていると、後からのオーガニック成長もスムーズになるはず。\n\nリプ欄にリンクもあるので、興味があればチェックしてみてください！",
+    "reference_summary": "【サービス概要】SNSフォロワー獲得・エンゲージメント向上を支援するサービス。Instagram、X、TikTok、YouTubeなど主要SNSに対応。安全性を重視した段階的な増加で、アカウント凍結リスクを最小化。日本人フォロワーに特化。\n【ターゲット】SNS運用担当者、インフルエンサー、個人事業主、ECサイト運営者、ブランドマーケター、SNSマーケティング初心者、YouTubeチャンネル運営者、TikTokクリエイター\n\n【参照: https://sns.globezenith.net/】\nタイトル: SNSフォロワー購入なら GlobeSNS｜Instagram・X・TikTok・YouTube対応\n見出し: フォロワーを、確かな品質で増やす。 / 安心の法人運営 / パスワード一切不要 / 30日間品質保証 / 徹底した秘密厳守\n概要: 累計 1,000件+ の実績 Stripe安全決済 最短24時間で開始 フォロワーを、確かな品質で増やす。 SNS運用の初速づくりを、プロモーション設計で効率的にサポート。 安全性に配慮した設計・30日品質保証付き。※パスワード不要 Instag",
+    "status": "published",
+    "scheduled_for": null,
+    "published_at": "2026-04-17T00:04:10.572Z",
+    "created_at": "2026-04-17T00:04:10.572Z",
+    "platform_post_id": "17901891435410542"
   }
 ]
