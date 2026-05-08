@@ -3126,5 +3126,26 @@
     "published_at": "2026-05-07T13:13:01.233Z",
     "created_at": "2026-05-07T13:13:01.233Z",
     "platform_post_id": "17999326619946609"
+  },
+  {
+    "id": "a0053a5a-b04b-4745-95ce-328b1cf44e4a",
+    "platform": "threads",
+    "account_profile_id": "globesns-threads",
+    "service_name": "globesns",
+    "original_url": "https://sns.globezenith.net/reviews/",
+    "utm_url": "https://sns.globezenith.net/reviews/?utm_source=threads&utm_medium=social&utm_campaign=auto_bot&utm_content=globesns_tips_practical_globesns-threads",
+    "angle": "tips_practical",
+    "post_type": "educational",
+    "hook": "投稿時間、気にしたことありますか？",
+    "hashtags": [
+      "#SNS運用"
+    ],
+    "generated_text": "SNSの投稿時間って本当に大事なんですよ。\n\n特に「ゴールデンタイム」と呼ばれる、みんながSNSを見ている時間を狙うと、エンゲージメントがぐっと上がります。\n\n例えば、平日の夕方6時から9時ごろや、週末の昼間は、多くの人がスマホをチェックする時間帯。これを意識するだけで、リーチが大きく変わりますよ！\n\nまた、曜日によっても傾向が違うことがあるので、自分のアカウントのフォロワー層に合った時間を探ってみるのもいいですね。\n\n試しに、今週はゴールデンタイムに投稿してみて、反応を観察してみると面白いかも！",
+    "reference_summary": "【サービス概要】SNSフォロワー獲得・エンゲージメント向上を支援するサービス。Instagram、X、TikTok、YouTubeなど主要SNSに対応。安全性を重視した段階的な増加で、アカウント凍結リスクを最小化。日本人フォロワーに特化。\n【ターゲット】SNS運用担当者、インフルエンサー、個人事業主、ECサイト運営者、ブランドマーケター、SNSマーケティング初心者、YouTubeチャンネル運営者、TikTokクリエイター\n\n【参照: https://sns.globezenith.net/】\nタイトル: SNSフォロワー購入なら GlobeSNS｜Instagram・X・TikTok・YouTube対応\n見出し: フォロワーを、確かな品質で増やす。 / 安心の法人運営 / パスワード一切不要 / 30日間品質保証 / 徹底した秘密厳守\n概要: 累計 1,000件+ の実績 Stripe安全決済 最短24時間で開始 フォロワーを、確かな品質で増やす。 SNS運用の初速づくりを、プロモーション設計で効率的にサポート。 安全性に配慮した設計・30日品質保証付き。※パスワード不要 Instag",
+    "status": "published",
+    "scheduled_for": null,
+    "published_at": "2026-05-08T00:14:13.406Z",
+    "created_at": "2026-05-08T00:14:13.406Z",
+    "platform_post_id": "17951176733984340"
   }
 ]
