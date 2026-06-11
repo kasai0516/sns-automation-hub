@@ -10,3 +10,6 @@ logs/
 *_debug*.json
 test-*.ts
 git_log_temp.txt
+test-x-auth.ts 
+test-x-post.ts 
+x_error_debug.json 

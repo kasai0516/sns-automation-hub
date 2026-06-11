@@ -119,6 +119,7 @@ function buildImagePrompt(post: GeneratedPost): string {
   const serviceLabels: Record<string, string> = {
     'globesns': 'SNS follower growth and social media marketing',
     'ai-seo-writer': 'AI-powered SEO article writing',
+    'webtest': 'Job hunting aptitude test preparation and study materials',
   };
 
   const serviceContext = serviceLabels[post.service_name] || post.service_name;

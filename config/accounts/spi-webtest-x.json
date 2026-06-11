@@ -1,0 +1,13 @@
+{
+  "account_profile_id": "spi-webtest-x",
+  "platform": "x",
+  "account_name": "内定サポーター@Webテスト対策",
+  "service_name": "webtest",
+  "credential_env_prefix": "SPI_WEBTEST_X",
+  "posting_schedule": {
+    "cron": "0 0,5,12 * * *",
+    "description": "1日3回 (JST: 09:00, 14:00, 21:00)"
+  },
+  "timezone": "Asia/Tokyo",
+  "is_active": true
+}

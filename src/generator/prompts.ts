@@ -95,14 +95,14 @@ export const ANGLE_TEMPLATES: Record<AngleType, AngleTemplate> = {
     postType: 'soft_promo',
     weight: 20,
     instruction: `SNS運用における「初速」や「土台づくり」の重要性を語りながら、
-自然にフォロワー購入サービスの存在を示唆する。
+自然にSNS運用の裏技や戦略を紹介する。
 
-先に価値ある情報を提供してから、最後に軽くサービスに触れる構造。
-例：「初速がないと良い投稿も埋もれる」→「だから最初の数字を整えるのは戦略としてアリ」→「リプ欄にリンク」
+先に価値ある情報を提供してから、最後に軽くサイトに触れる構造。
+例：「初速がないと良い投稿も埋もれる」→「だから最初の数字を整えるのが大事」→「プロフにノウハウまとめてる」
 
-直接的に「買いましょう」とは言わない。
-「こういう選択肢もある」「賢い人はこうしてる」程度のトーン。`,
-    exampleStructure: `[初速・土台の重要性] → [自力だけでは時間がかかる現実] → [フォロワー購入という選択肢の提示] → [リプ欄にリンク案内]`,
+直接的な購入訴求はしない。
+「こういう方法がある」「効率的な戦略がある」程度のトーン。`,
+    exampleStructure: `[初速・土台の重要性] → [具体的な戦略の紹介] → [プロフにリンク案内]`,
     ctaStrength: 2,
     includeServiceMention: true,
     engagementQuestion: 'optional',
@@ -114,17 +114,17 @@ export const ANGLE_TEMPLATES: Record<AngleType, AngleTemplate> = {
     category: 'promo',
     postType: 'direct_cta',
     weight: 10,
-    instruction: `フォロワー購入サービスをストレートに訴求する。
+    instruction: `SNSフォロワーを効率的に増やす戦略やノウハウをストレートに紹介する。
 ただし押し売り感は出さない。
 
 伝えるポイント：
-- 安全性（Bot不使用、段階的増加、凍結リスク最小）
-- コスパ（数千円から始められる）
-- 保証（30日間減少保証、パスワード不要）
-- 対応範囲（Instagram, X, TikTok, YouTube）
+- 各SNSのアルゴリズム攻略法
+- バズる投稿の型・テンプレ
+- 効率的なフォロワー獲得術
+- 収益化への最短ルート
 
 毎回同じ文面にならないよう、切り口を変えること。`,
-    exampleStructure: `[フォロワー購入の提案] → [安全・安い・保証の強み] → [リプ欄にリンク案内]`,
+    exampleStructure: `[SNS成長の具体的なテクニック] → [効果の説明] → [プロフにリンク案内]`,
     ctaStrength: 3,
     includeServiceMention: true,
     engagementQuestion: 'none',
@@ -265,21 +265,29 @@ export function selectAngle(recentAngles: AngleType[]): AngleType {
 
 // ===== ハッシュタグ候補 =====
 
-const HASHTAG_CANDIDATES: Record<Platform, string[]> = {
+const HASHTAG_CANDIDATES_DEFAULT: Record<Platform, string[]> = {
   x: ['#SNS運用', '#マーケティング', '#インスタ運用', '#X運用', '#フォロワー'],
   threads: ['#SNS運用', '#フォロワー増やす', '#インスタ運用', '#Threads運用', '#TikTok攻略', '#SNSマーケティング'],
+};
+
+const HASHTAG_CANDIDATES_WEBTEST: Record<Platform, string[]> = {
+  x: ['#就活', '#Webテスト', '#SPI', '#25卒', '#26卒', '#27卒', '#適性検査'],
+  threads: ['#就活', '#Webテスト対策', '#SPI対策', '#玉手箱', '#就活生と繋がりたい'],
+};
+
+const HASHTAG_BY_SERVICE: Record<string, Record<Platform, string[]>> = {
+  'webtest': HASHTAG_CANDIDATES_WEBTEST,
 };
 
 /**
  * プラットフォームと角度に応じてハッシュタグを選択
  */
-export function selectHashtags(platform: Platform, angle: AngleType): string[] {
-  const template = ANGLE_TEMPLATES[angle];
-
+export function selectHashtags(platform: Platform, angle: AngleType, serviceName?: string): string[] {
   // direct_cta では基本ハッシュタグなし
   if (angle === 'direct_cta') return [];
 
-  const candidates = HASHTAG_CANDIDATES[platform];
+  const candidateMap = HASHTAG_BY_SERVICE[serviceName || ''] || HASHTAG_CANDIDATES_DEFAULT;
+  const candidates = candidateMap[platform];
 
   if (platform === 'x') {
     // X: 50%の確率で0個、50%で1個
@@ -293,23 +301,34 @@ export function selectHashtags(platform: Platform, angle: AngleType): string[] {
   if (roll < 0.7) {
     return [candidates[Math.floor(Math.random() * candidates.length)]];
   }
-  // 2個（重複なし）
   const shuffled = [...candidates].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, 2);
 }
 
 // ===== SEOキーワード（soft_promo / direct_cta のみ使用） =====
 
-const SEO_KEYWORDS = [
-  'フォロワー購入', 'フォロワー 増やす', 'フォロワー 買う',
-  'インスタ フォロワー', 'X フォロワー',
-  'TikTok フォロワー', 'YouTube 登録者', 'YouTube 収益化',
+const SEO_KEYWORDS_DEFAULT = [
+  'フォロワー 増やす', 'フォロワー 増やし方', 'SNS 伸ばす',
+  'インスタ フォロワー 増やす', 'X フォロワー 増やし方',
+  'TikTok フォロワー 増やす', 'YouTube 登録者 増やす', 'YouTube 収益化',
   'いいね 増やす', 'SNS 集客', 'SNS 初速',
-  'フォロワー 安全', 'フォロワー 凍結されない',
+  'SNS アルゴリズム', 'SNS 運用 コツ', 'バズる 投稿',
 ];
 
-function pickSeoKeywords(count: number = 2): string[] {
-  const shuffled = [...SEO_KEYWORDS].sort(() => Math.random() - 0.5);
+const SEO_KEYWORDS_WEBTEST = [
+  'Webテスト 解答集', 'SPI 対策', 'SPI 解答', '玉手箱 対策',
+  'Webテスト 答え', '適性検査 対策', 'TG-WEB 対策',
+  'eF-1G 解答', 'GAB 対策', 'テストセンター 対策',
+  '就活 Webテスト', 'Webテスト 通過',
+];
+
+const SEO_KEYWORDS_BY_SERVICE: Record<string, string[]> = {
+  'webtest': SEO_KEYWORDS_WEBTEST,
+};
+
+function pickSeoKeywords(count: number = 2, serviceName?: string): string[] {
+  const keywords = SEO_KEYWORDS_BY_SERVICE[serviceName || ''] || SEO_KEYWORDS_DEFAULT;
+  const shuffled = [...keywords].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, count);
 }
 
@@ -353,7 +372,7 @@ export function buildGenerationPrompt(options: {
   // SEOキーワード指示（宣伝系のみ）
   let seoInstruction = '';
   if (template.category === 'promo') {
-    const keywords = pickSeoKeywords(2);
+    const keywords = pickSeoKeywords(2, options.serviceName);
     seoInstruction = `## 📌 SEOキーワード（宣伝投稿のみ）
 以下のキーワードのうち1〜2個を文中に自然に含める：
 - ${keywords.join('\n- ')}`;
@@ -378,12 +397,8 @@ export function buildGenerationPrompt(options: {
   // ハッシュタグ指示
   const hashtagInstruction = constraints.hashtagGuidance;
 
-  // ペルソナの切り替え
-  const persona = template.category === 'promo'
-    ? `あなたはSNS運用の「裏側」を知り尽くしたマーケター。効率重視でスマートな戦略を語る。
-「良い発信をすれば伸びる」という綺麗事は否定し、「初速設計」や「時間をお金で買う」考え方を自然に語る。`
-    : `あなたは実践派のSNSマーケター。自分自身もSNSを運用しており、リアルな経験に基づいたアドバイスをする。
-押し売りは一切しない。フォロワーにとって有益な情報を共有することだけに集中する。普通のSNSユーザーとして自然に発信する。`;
+  // ペルソナの切り替え（サービス別）
+  const persona = getPersona(options.serviceName, template);
 
   return `${persona}
 
@@ -395,7 +410,7 @@ export function buildGenerationPrompt(options: {
 - 同じ構文の繰り返しを避けて、自然な文体にする
 
 ## 今回の投稿カテゴリ: ${template.label}
-${template.instruction}
+${getInstructionOverride(options.serviceName, template)}
 
 ## 構造イメージ
 ${template.exampleStructure}
@@ -433,4 +448,91 @@ ${referenceSummary}
   "generated_text": "投稿文の全文",
   "hashtags": ["ハッシュタグ（ルールに従って0〜2個）"]
 }`;
+}
+
+// ===== サービス別ペルソナ =====
+
+function getPersona(serviceName: string, template: AngleTemplate): string {
+  if (serviceName === 'webtest') {
+    return template.category === 'promo'
+      ? `あなたは就活を経験済みの先輩。Webテストで苦労した経験があり、効率的な対策法を知っている。
+自分が使って良かった解答集を自然に紹介する立場。押し売りはしないが、「これ使ったら楽だった」というリアルなトーンで語る。`
+      : `あなたは就活経験者で、Webテスト対策のコツを発信している人。
+就活生の不安や悩みに共感しながら、実践的なアドバイスをする。普通の先輩として自然に発信する。`;
+  }
+  // デフォルト（SNSマーケ系）
+  return template.category === 'promo'
+    ? `あなたはSNS運用の「裏側」を知り尽くしたマーケター。効率重視でスマートな戦略を語る。
+「良い発信をすれば伸びる」という綺麗事は否定し、「初速設計」や「時間をお金で買う」考え方を自然に語る。`
+    : `あなたは実践派のSNSマーケター。自分自身もSNSを運用しており、リアルな経験に基づいたアドバイスをする。
+押し売りは一切しない。フォロワーにとって有益な情報を共有することだけに集中する。普通のSNSユーザーとして自然に発信する。`;
+}
+
+// ===== サービス別 投稿指示オーバーライド =====
+
+function getInstructionOverride(serviceName: string, template: AngleTemplate): string {
+  if (serviceName !== 'webtest') return template.instruction;
+
+  const webtestOverrides: Partial<Record<AngleType, string>> = {
+    tips_practical: `就活のWebテスト対策に関する具体的で実践的なテクニックを共有する。
+以下のいずれかのテーマを扱う：
+- SPI・玉手箱・TG-WEBなど各テストの特徴と対策法
+- Webテスト本番で時間配分を間違えないコツ
+- 非言語分野（数学）の頻出パターンと解き方
+- テストセンターとWebテストの違い・注意点
+- ESは通るのにWebテストで落ちる人の共通点
+- 効率的な対策スケジュールの組み方
+
+保存したくなる、就活仲間に教えたくなる内容にすること。
+サービスの宣伝は一切しない。純粋な価値提供。`,
+
+    algorithm_insight: `就活市場やWebテストの最新動向について語る。
+以下のいずれかのテーマを扱う：
+- 企業がWebテストをどう評価しているか
+- 最近のテスト傾向の変化（AI監視、新形式の登場）
+- 人気企業がどのWebテストを使っているか
+- テストの足切りライン・ボーダーの考え方
+- 適性検査の結果がどの選考段階まで影響するか
+
+断定しすぎず「〜の傾向がある」「〜と言われている」という柔らかい表現を使う。
+サービスの宣伝は一切しない。純粋な情報提供。`,
+
+    question_engage: `就活生やWebテスト対策中の人に経験・意見を聞く対話型の投稿。
+以下のような問いかけを中心に構成する：
+- Webテストで一番苦手なのはどれ？（SPI/玉手箱/TG-WEB）
+- テスト対策いつから始めた？
+- 玉手箱の計数、時間足りる人いる？
+- SPIのテストセンターとWebテスト、どっちが得意？
+- Webテストで失敗した経験ある？
+
+必ず文末に返信したくなる質問を入れること。
+宣伝は一切しない。対話を生み出すことだけに集中。`,
+
+    soft_promo: `Webテスト対策の大変さや不安に共感しながら、
+自然にWebテスト解答集の存在を示唆する。
+
+先に共感・有益情報を提供してから、最後に軽く解答集に触れる構造。
+例：「玉手箱の計数、対策本だけだと本番と全然違う」→「実際に出た問題ベースの解答集があると安心」→「プロフにリンク」
+
+直接的に「買いましょう」とは言わない。
+「こういうのがあると楽」「自分はこれ使った」程度のトーン。`,
+
+    direct_cta: `Webテスト解答集をストレートに紹介する。
+ただし押し売り感は出さない。
+
+伝えるポイント：
+- 7万問以上収録の圧倒的な物量
+- SPI・玉手箱・TG-WEB・eF-1G・GAB・テストセンター対応
+- 2,500円のワンタイム購入
+- 購入後すぐダウンロード可能
+- 不満なら返金可能
+
+毎回同じ文面にならないよう、切り口を変えること。`,
+  };
+
+  return (webtestOverrides as any)[template.postType === 'educational' 
+    ? (template.label.includes('実践') ? 'tips_practical' : 'algorithm_insight')
+    : template.postType === 'engagement' ? 'question_engage'
+    : template.postType === 'soft_promo' ? 'soft_promo'
+    : 'direct_cta'] || template.instruction;
 }

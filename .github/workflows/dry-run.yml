@@ -2,20 +2,30 @@ name: SNS Auto Post (Dry-Run)
 
 on:
   schedule:
-    # ===== X: 1日3回 (JST: 08:00, 12:30, 20:00) =====
-    - cron: '0 23 * * *'     # JST 08:00 = UTC 23:00 (前日)
-    - cron: '30 3 * * *'     # JST 12:30 = UTC 03:30
-    - cron: '0 11 * * *'     # JST 20:00 = UTC 11:00
+    # ===== GlobeSNS × X: 1日3回 =====
+    - cron: '0 23 * * *'
+    - cron: '30 3 * * *'
+    - cron: '0 11 * * *'
 
-    # ===== Threads: 1日3回 (JST: 08:30, 13:00, 20:30) =====
-    - cron: '30 23 * * *'    # JST 08:30 = UTC 23:30 (前日)
-    - cron: '0 4 * * *'      # JST 13:00 = UTC 04:00
-    - cron: '30 11 * * *'    # JST 20:30 = UTC 11:30
+    # ===== GlobeSNS × Threads: 1日3回 =====
+    - cron: '30 23 * * *'
+    - cron: '0 4 * * *'
+    - cron: '30 11 * * *'
+
+    # ===== spi_webtesting × X: 1日3回 =====
+    - cron: '0 0 * * *'
+    - cron: '0 5 * * *'
+    - cron: '0 12 * * *'
+
+    # ===== webtest_Answer_ × X: 1日3回 =====
+    - cron: '0 1 * * *'
+    - cron: '30 6 * * *'
+    - cron: '0 13 * * *'
 
   workflow_dispatch:
     inputs:
       account:
-        description: 'Account profile ID (e.g. globesns-x, globesns-threads)'
+        description: 'Account profile ID (e.g. globesns-x, spi-webtest-x, webtest-answer-x)'
         required: false
         default: ''
 
@@ -35,7 +45,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - run: npm ci
@@ -47,15 +57,18 @@ jobs:
             echo "id=${{ github.event.inputs.account }}" >> $GITHUB_OUTPUT
           else
             CRON="${{ github.event.schedule }}"
-            # X schedules: 23:00, 03:30, 11:00 UTC
-            if [ "$CRON" == "0 23 * * *" ] || [ "$CRON" == "30 3 * * *" ] || [ "$CRON" == "0 11 * * *" ]; then
-              echo "id=globesns-x" >> $GITHUB_OUTPUT
-            # Threads schedules: 23:30, 04:00, 11:30 UTC
-            elif [ "$CRON" == "30 23 * * *" ] || [ "$CRON" == "0 4 * * *" ] || [ "$CRON" == "30 11 * * *" ]; then
-              echo "id=globesns-threads" >> $GITHUB_OUTPUT
-            else
-              echo "id=globesns-x" >> $GITHUB_OUTPUT
-            fi
+            case "$CRON" in
+              "0 23 * * *"|"30 3 * * *"|"0 11 * * *")
+                echo "id=globesns-x" >> $GITHUB_OUTPUT ;;
+              "30 23 * * *"|"0 4 * * *"|"30 11 * * *")
+                echo "id=globesns-threads" >> $GITHUB_OUTPUT ;;
+              "0 0 * * *"|"0 5 * * *"|"0 12 * * *")
+                echo "id=spi-webtest-x" >> $GITHUB_OUTPUT ;;
+              "0 1 * * *"|"30 6 * * *"|"0 13 * * *")
+                echo "id=webtest-answer-x" >> $GITHUB_OUTPUT ;;
+              *)
+                echo "id=globesns-x" >> $GITHUB_OUTPUT ;;
+            esac
           fi
 
       - name: Run dry-run

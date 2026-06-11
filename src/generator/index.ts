@@ -115,7 +115,7 @@ export async function generatePost(
     // Select hashtags based on platform & angle
     const hashtags = llmResult.hashtags && llmResult.hashtags.length > 0
       ? llmResult.hashtags
-      : selectHashtags(account.platform, angle);
+      : selectHashtags(account.platform, angle, service.service_name);
 
     const post: GeneratedPost = {
       platform: account.platform,

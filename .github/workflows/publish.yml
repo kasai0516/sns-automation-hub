@@ -12,10 +12,20 @@ on:
     - cron: '0 4 * * *'      # JST 13:00 = UTC 04:00
     - cron: '30 11 * * *'    # JST 20:30 = UTC 11:30
 
+    # ===== spi_webtesting × X: 1日3回 (JST: 09:00, 14:00, 21:00) =====
+    - cron: '0 0 * * *'      # JST 09:00 = UTC 00:00
+    - cron: '0 5 * * *'      # JST 14:00 = UTC 05:00
+    - cron: '0 12 * * *'     # JST 21:00 = UTC 12:00
+
+    # ===== webtest_Answer_ × X: 1日3回 (JST: 10:00, 15:30, 22:00) =====
+    - cron: '0 1 * * *'      # JST 10:00 = UTC 01:00
+    - cron: '30 6 * * *'     # JST 15:30 = UTC 06:30
+    - cron: '0 13 * * *'     # JST 22:00 = UTC 13:00
+
   workflow_dispatch:
     inputs:
       account:
-        description: 'Account profile ID (e.g. globesns-x, globesns-threads)'
+        description: 'Account profile ID (e.g. globesns-x, spi-webtest-x, webtest-answer-x)'
         required: false
         default: 'globesns-x'
       confirm:
@@ -44,6 +54,16 @@ jobs:
       # GlobeSNS × Threads credentials
       GLOBESNS_THREADS_ACCESS_TOKEN: ${{ secrets.GLOBESNS_THREADS_ACCESS_TOKEN }}
       GLOBESNS_THREADS_USER_ID: ${{ secrets.GLOBESNS_THREADS_USER_ID }}
+      # spi_webtesting × X credentials
+      SPI_WEBTEST_X_API_KEY: ${{ secrets.SPI_WEBTEST_X_API_KEY }}
+      SPI_WEBTEST_X_API_SECRET: ${{ secrets.SPI_WEBTEST_X_API_SECRET }}
+      SPI_WEBTEST_X_ACCESS_TOKEN: ${{ secrets.SPI_WEBTEST_X_ACCESS_TOKEN }}
+      SPI_WEBTEST_X_ACCESS_SECRET: ${{ secrets.SPI_WEBTEST_X_ACCESS_SECRET }}
+      # webtest_Answer_ × X credentials
+      WEBTEST_ANSWER_X_API_KEY: ${{ secrets.WEBTEST_ANSWER_X_API_KEY }}
+      WEBTEST_ANSWER_X_API_SECRET: ${{ secrets.WEBTEST_ANSWER_X_API_SECRET }}
+      WEBTEST_ANSWER_X_ACCESS_TOKEN: ${{ secrets.WEBTEST_ANSWER_X_ACCESS_TOKEN }}
+      WEBTEST_ANSWER_X_ACCESS_SECRET: ${{ secrets.WEBTEST_ANSWER_X_ACCESS_SECRET }}
 
     steps:
       - uses: actions/checkout@v4
@@ -52,7 +72,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - run: npm ci
@@ -62,15 +82,22 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" == "schedule" ]; then
             CRON="${{ github.event.schedule }}"
-            # X schedules: 23:00, 03:30, 11:00 UTC
-            if [ "$CRON" == "0 23 * * *" ] || [ "$CRON" == "30 3 * * *" ] || [ "$CRON" == "0 11 * * *" ]; then
-              echo "id=globesns-x" >> $GITHUB_OUTPUT
-            # Threads schedules: 23:30, 04:00, 11:30 UTC
-            elif [ "$CRON" == "30 23 * * *" ] || [ "$CRON" == "0 4 * * *" ] || [ "$CRON" == "30 11 * * *" ]; then
-              echo "id=globesns-threads" >> $GITHUB_OUTPUT
-            else
-              echo "id=globesns-x" >> $GITHUB_OUTPUT
-            fi
+            case "$CRON" in
+              # GlobeSNS × X
+              "0 23 * * *"|"30 3 * * *"|"0 11 * * *")
+                echo "id=globesns-x" >> $GITHUB_OUTPUT ;;
+              # GlobeSNS × Threads
+              "30 23 * * *"|"0 4 * * *"|"30 11 * * *")
+                echo "id=globesns-threads" >> $GITHUB_OUTPUT ;;
+              # spi_webtesting × X
+              "0 0 * * *"|"0 5 * * *"|"0 12 * * *")
+                echo "id=spi-webtest-x" >> $GITHUB_OUTPUT ;;
+              # webtest_Answer_ × X
+              "0 1 * * *"|"30 6 * * *"|"0 13 * * *")
+                echo "id=webtest-answer-x" >> $GITHUB_OUTPUT ;;
+              *)
+                echo "id=globesns-x" >> $GITHUB_OUTPUT ;;
+            esac
           elif [ -n "${{ github.event.inputs.account }}" ]; then
             echo "id=${{ github.event.inputs.account }}" >> $GITHUB_OUTPUT
           else

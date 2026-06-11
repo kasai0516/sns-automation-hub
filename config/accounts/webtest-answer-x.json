@@ -1,0 +1,13 @@
+{
+  "account_profile_id": "webtest-answer-x",
+  "platform": "x",
+  "account_name": "Webテスト攻略【解答集】",
+  "service_name": "webtest",
+  "credential_env_prefix": "WEBTEST_ANSWER_X",
+  "posting_schedule": {
+    "cron": "0 1,6,13 * * *",
+    "description": "1日3回 (JST: 10:00, 15:30, 22:00)"
+  },
+  "timezone": "Asia/Tokyo",
+  "is_active": true
+}

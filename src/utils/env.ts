@@ -100,6 +100,14 @@ export function printEnvStatus(): void {
     { key: 'GLOBESNS_X_ACCESS_SECRET', required: false, description: 'GlobeSNS × X Access Secret' },
     { key: 'GLOBESNS_THREADS_ACCESS_TOKEN', required: false, description: 'GlobeSNS × Threads Token' },
     { key: 'GLOBESNS_THREADS_USER_ID', required: false, description: 'GlobeSNS × Threads User ID' },
+    { key: 'SPI_WEBTEST_X_API_KEY', required: false, description: 'spi_webtesting × X API Key' },
+    { key: 'SPI_WEBTEST_X_API_SECRET', required: false, description: 'spi_webtesting × X API Secret' },
+    { key: 'SPI_WEBTEST_X_ACCESS_TOKEN', required: false, description: 'spi_webtesting × X Access Token' },
+    { key: 'SPI_WEBTEST_X_ACCESS_SECRET', required: false, description: 'spi_webtesting × X Access Secret' },
+    { key: 'WEBTEST_ANSWER_X_API_KEY', required: false, description: 'webtest_Answer_ × X API Key' },
+    { key: 'WEBTEST_ANSWER_X_API_SECRET', required: false, description: 'webtest_Answer_ × X API Secret' },
+    { key: 'WEBTEST_ANSWER_X_ACCESS_TOKEN', required: false, description: 'webtest_Answer_ × X Access Token' },
+    { key: 'WEBTEST_ANSWER_X_ACCESS_SECRET', required: false, description: 'webtest_Answer_ × X Access Secret' },
   ];
 
   for (const check of checks) {
