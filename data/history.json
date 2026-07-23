@@ -2192,5 +2192,26 @@
     "published_at": "2026-07-23T06:14:03.931Z",
     "created_at": "2026-07-23T06:14:03.931Z",
     "platform_post_id": "2080174585597600242"
+  },
+  {
+    "id": "e51e6aa1-ccf6-497b-8a0b-92eff2e141e0",
+    "platform": "x",
+    "account_profile_id": "globesns-x",
+    "service_name": "globesns",
+    "original_url": "https://sns.globezenith.net/media/youtube-monetization-guide/",
+    "utm_url": "https://sns.globezenith.net/media/youtube-monetization-guide/?utm_source=x&utm_medium=social&utm_campaign=auto_bot&utm_content=globesns_direct_cta_globesns-x",
+    "angle": "direct_cta",
+    "post_type": "direct_cta",
+    "hook": "SNSのフォロワー増やすの、実は簡単ですよ。",
+    "hashtags": [
+      "#SNS運用"
+    ],
+    "generated_text": "SNSの初速設計、意外と見落としがちです。特にアルゴリズムを理解してないと、ただ頑張るだけじゃ結果が出にくいんですよね。\n\n例えば、Instagramではリールを中心にしたコンテンツが今一番エンゲージメントを引き出す方法ですし、Xならフォロワーが多いほどリプライの表示順が上がる傾向があります。効率を重視するなら、こうしたプラットフォームごとの特性を活かすことが必須です。リプ欄にリンク置いたので、興味ある方はぜひチェックしてみてください！",
+    "reference_summary": "【サービス概要】SNS運用の裏技・戦略を発信するアカウント。Instagram、X、TikTok、YouTubeなど主要SNSの伸ばし方を実践ベースで紹介。アルゴリズム攻略、バズる投稿の型、効率的なフォロワー獲得術など、SNSマーケティングの実践知を共有。\n【ターゲット】SNS運用担当者、インフルエンサー志望者、個人事業主、副業でSNSを始めたい人、SNSマーケティング初心者、YouTubeチャンネル運営者、TikTokクリエイター、フリーランス\n\n【参照: https://sns.globezenith.net/】\nタイトル: SNSフォロワー購入なら GlobeSNS｜Instagram・X・TikTok・YouTube対応\n見出し: フォロワーを、確かな品質で増やす。 / 安心の法人運営 / パスワード一切不要 / 30日間品質保証 / 徹底した秘密厳守\n概要: 累計 1,000件+ の実績 Stripe安全決済 最短24時間で開始 フォロワーを、確かな品質で増やす。 SNS運用の初速づくりを、プロモーション設計で効率的にサポート。 安全性に配慮した設計・30日品質保証付き。※パ",
+    "status": "published",
+    "scheduled_for": null,
+    "published_at": "2026-07-23T12:24:10.917Z",
+    "created_at": "2026-07-23T12:24:10.917Z",
+    "platform_post_id": "2080267721288175775"
   }
 ]
