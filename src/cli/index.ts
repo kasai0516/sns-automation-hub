@@ -183,5 +183,67 @@ function getAdapter(platform: Platform): SnsAdapter {
   }
 }
 
+// ===== post-text command (hand-written text, no LLM) =====
+// Publishes exactly the text given, as a single post, through the account's adapter.
+// Added 2026-10-13 for the blog.pentra.jp announcements: the text is written by a person,
+// so no generation, no image, no dedupe; history is still recorded.
+program
+  .command('post-text')
+  .description('Publish a hand-written text as-is (single post, no LLM)')
+  .requiredOption('--account <id>', 'Account profile ID (e.g. ai-seo-x)')
+  .requiredOption('--file <path>', 'UTF-8 text file with the post body')
+  .option('--url <url>', 'Link the post is about (recorded in history)', '')
+  .option('--mode <mode>', 'Mode: dry-run or publish', 'dry-run')
+  .action(async (options) => {
+    try {
+      const mode = options.mode as string;
+      if (mode !== 'dry-run' && mode !== 'publish') {
+        logger.error('--mode must be dry-run or publish');
+        process.exit(1);
+      }
+      loadAccountProfiles();
+      const account = getAccountProfile(options.account);
+      if (!account) {
+        logger.error(`Account not found: ${options.account}`);
+        process.exit(1);
+      }
+      const fs = await import('node:fs');
+      const text = fs.readFileSync(options.file, 'utf8').replace(/\r\n/g, '\n').trim();
+      if (!text) {
+        logger.error('The text file is empty');
+        process.exit(1);
+      }
+      const post = {
+        platform: account.platform,
+        service_name: account.service_name,
+        account_profile_id: account.account_profile_id,
+        original_url: options.url,
+        utm_url: options.url,
+        angle: 'soft_promo' as AngleType,
+        post_type: 'soft_promo' as const,
+        hook: text.split('\n')[0],
+        hashtags: [],
+        generated_text: text,
+        reference_summary: 'hand-written (post-text)',
+        should_reply_with_link: false,
+        post_mode: 'single' as const,
+      };
+      if (mode === 'dry-run') {
+        logger.header(`post-text dry-run | ${account.account_profile_id} (${account.platform})`);
+        logger.info(`chars: ${text.length}`);
+        logger.info(text);
+        return;
+      }
+      validateAccountCredentials(account);
+      const adapter = getAdapter(account.platform);
+      const platformPostId = await adapter.publish(post, account);
+      saveToHistory(post, 'published', platformPostId);
+      logger.success(`✓ Published: ${account.account_profile_id} → ${platformPostId}`);
+    } catch (error) {
+      logger.error(`Fatal: ${error instanceof Error ? error.message : String(error)}`);
+      process.exit(1);
+    }
+  });
+
 // Parse and execute
 program.parse();

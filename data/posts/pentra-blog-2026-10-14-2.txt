@@ -1,0 +1,3 @@
+「AI検索に拾われる前に埋めるべき項目」を自己診断できるチェックリストにしました。
+会社情報・一次情報・FAQ・構造化データ、どこが抜けているかが10分でわかります。
+https://blog.pentra.jp/geo-taisaku-checklist-chusho-kigyo/
