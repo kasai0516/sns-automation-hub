@@ -1,0 +1,3 @@
+AI検索で引用された記事と、されなかった記事を並べて差分を見ました。
+違いは文章のうまさではなく「一次情報があるか」「要点が最初にあるか」でした。
+https://blog.pentra.jp/ai-kensaku-inyosha-kiji-kyotsu-ten/

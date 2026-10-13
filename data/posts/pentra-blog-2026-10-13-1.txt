@@ -1,0 +1,4 @@
+サイトがハッキングされると、直した後も検索評価はすぐ戻りません。
+Pentra公式ブログは7月の被害後、Googleが約1万件のスパムURLを今も巡回中（10/10時点）。
+410を返す・GSCで非表示申請・本物の記事を積む——その経過を数字つきで公開しました。
+https://blog.pentra.jp/hacked-blog-recovery-gsc-record/
